@@ -4,6 +4,12 @@
 # bower
 bower_components
 
+# TypeScript type definitions
+typings
+
+# TypeScript
+*.js.map
+
 # Logs
 logs
 *.log

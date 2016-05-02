@@ -12,6 +12,7 @@
   "homepage": "https://github.com/naphatkrit/flappy-nerds#readme",
   "dependencies": {
     "bower": "^1.7.9",
-    "typescript": "^1.8.10"
+    "typescript": "^1.8.10",
+    "typings": "^0.8.1"
   }
 }
