@@ -1,0 +1,21 @@
+{
+  "name": "flappy-nerds",
+  "description": "",
+  "main": "",
+  "authors": [],
+  "homepage": "https://github.com/naphatkrit/flappy-nerds",
+  "moduleType": [],
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "three.js": "threejs#r70",
+    "stats.js": "#r11",
+    "dat-gui": "#0.4.0"
+  }
+}

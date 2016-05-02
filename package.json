@@ -1,0 +1,17 @@
+{
+  "name": "flappy-nerds",
+  "version": "1.0.0",
+  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/naphatkrit/flappy-nerds.git"
+  },
+  "bugs": {
+    "url": "https://github.com/naphatkrit/flappy-nerds/issues"
+  },
+  "homepage": "https://github.com/naphatkrit/flappy-nerds#readme",
+  "dependencies": {
+    "bower": "^1.7.9",
+    "typescript": "^1.8.10"
+  }
+}
