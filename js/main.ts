@@ -15,6 +15,9 @@ class Main {
     private frustumSize = 600;
     private activeHelper;
 
+    private topPlane: Plane;
+    private bottomPlane: Plane;
+
     private updater: Updater;
     private _initContainer() {
         this.container = document.createElement('div');
@@ -39,6 +42,12 @@ class Main {
         }
         var particles = new THREE.Points(geometry, new THREE.PointsMaterial({ color: 0x888888 }));
         this.scene.add(particles);
+    }
+
+    private _initPlanes() {
+        // the y positions should be close to the far plane of the perspective camera / 2
+        this.topPlane = new Plane(this.scene, 400, Config.VELOCITY);
+        this.bottomPlane = new Plane(this.scene, -400, Config.VELOCITY);
     }
 
     private _initCameras() {
@@ -73,7 +82,7 @@ class Main {
     }
 
     private _initUpdater() {
-        this.updater = new Updater(this.bird, this.cameraRig);
+        this.updater = new Updater(this.bird, this.cameraRig, this.topPlane, this.bottomPlane);
     }
 
     private _initStats() {
@@ -86,6 +95,7 @@ class Main {
         this._initScene();
         this._initCameras();
         this._initBird();
+        this._initPlanes();
         this._initUpdater();
         this._initStats();
         window.addEventListener('resize', (event) => { this.onWindowResize(event) }, false);
