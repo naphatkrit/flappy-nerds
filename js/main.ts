@@ -1,11 +1,10 @@
 var SCREEN_WIDTH = window.innerWidth;
 var SCREEN_HEIGHT = window.innerHeight;
 var aspect = SCREEN_WIDTH / SCREEN_HEIGHT;
-var container, stats;
-var camera: THREE.PerspectiveCamera, scene: THREE.Scene, renderer, mesh;
-var cameraRig: THREE.Group, activeCamera, activeHelper;
-var cameraPerspective, cameraOrtho;
-var cameraPerspectiveHelper, cameraOrthoHelper;
+var container: HTMLDivElement, stats;
+var scene: THREE.Scene, renderer: THREE.WebGLRenderer, mesh: THREE.Mesh;
+var cameraRig: THREE.Group, activeCamera: THREE.Camera;
+var cameraPerspective: THREE.PerspectiveCamera;
 var frustumSize = 600;
 
 window.onload = function() {
@@ -18,24 +17,13 @@ function init() {
     document.body.appendChild(container);
     scene = new THREE.Scene();
     //
-    camera = new THREE.PerspectiveCamera(50, 0.5 * aspect, 1, 10000);
-    camera.position.z = 2500;
-    cameraPerspective = new THREE.PerspectiveCamera(50, 0.5 * aspect, 150, 1000);
-    cameraPerspectiveHelper = new THREE.CameraHelper(cameraPerspective);
-    scene.add(cameraPerspectiveHelper);
-    //
-    cameraOrtho = new THREE.OrthographicCamera(0.5 * frustumSize * aspect / - 2, 0.5 * frustumSize * aspect / 2, frustumSize / 2, frustumSize / - 2, 150, 1000);
-    cameraOrthoHelper = new THREE.CameraHelper(cameraOrtho);
-    scene.add(cameraOrthoHelper);
+    cameraPerspective = new THREE.PerspectiveCamera(50, aspect, 150, 1000);
     //
     activeCamera = cameraPerspective;
-    activeHelper = cameraPerspectiveHelper;
     // counteract different front orientation of cameras vs rig
-    cameraOrtho.rotation.y = Math.PI;
     cameraPerspective.rotation.y = Math.PI;
     cameraRig = new THREE.Group();
     cameraRig.add(cameraPerspective);
-    cameraRig.add(cameraOrtho);
     scene.add(cameraRig);
     // white ball
     mesh = new THREE.Mesh(
@@ -88,13 +76,8 @@ function init() {
 //
 function onKeyDown(event) {
     switch (event.keyCode) {
-        case 79: /*O*/
-            activeCamera = cameraOrtho;
-            activeHelper = cameraOrthoHelper;
-            break;
         case 80: /*P*/
             activeCamera = cameraPerspective;
-            activeHelper = cameraPerspectiveHelper;
             break;
     }
 }
@@ -104,15 +87,8 @@ function onWindowResize(event) {
     SCREEN_HEIGHT = window.innerHeight;
     aspect = SCREEN_WIDTH / SCREEN_HEIGHT;
     renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
-    camera.aspect = 0.5 * aspect;
-    camera.updateProjectionMatrix();
-    cameraPerspective.aspect = 0.5 * aspect;
+    cameraPerspective.aspect = aspect;
     cameraPerspective.updateProjectionMatrix();
-    cameraOrtho.left = - 0.5 * frustumSize * aspect / 2;
-    cameraOrtho.right = 0.5 * frustumSize * aspect / 2;
-    cameraOrtho.top = frustumSize / 2;
-    cameraOrtho.bottom = - frustumSize / 2;
-    cameraOrtho.updateProjectionMatrix();
 }
 //
 function animate() {
@@ -122,7 +98,6 @@ function animate() {
 }
 function render() {
     var r = Date.now() * 0.0005;
-    r = 0;
     mesh.position.x = 700 * Math.cos(r);
     mesh.position.z = 700 * Math.sin(r);
     mesh.position.y = 700 * Math.sin(r);
@@ -132,22 +107,9 @@ function render() {
         cameraPerspective.fov = 35 + 30 * Math.sin(0.5 * r);
         cameraPerspective.far = mesh.position.length();
         cameraPerspective.updateProjectionMatrix();
-        cameraPerspectiveHelper.update();
-        cameraPerspectiveHelper.visible = true;
-        cameraOrthoHelper.visible = false;
-    } else {
-        cameraOrtho.far = mesh.position.length();
-        cameraOrtho.updateProjectionMatrix();
-        cameraOrthoHelper.update();
-        cameraOrthoHelper.visible = true;
-        cameraPerspectiveHelper.visible = false;
     }
     cameraRig.lookAt(mesh.position);
     renderer.clear();
-    activeHelper.visible = false;
-    renderer.setViewport(0, 0, SCREEN_WIDTH / 2, SCREEN_HEIGHT);
+    renderer.setViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     renderer.render(scene, activeCamera);
-    activeHelper.visible = true;
-    renderer.setViewport(SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2, SCREEN_HEIGHT);
-    renderer.render(scene, camera);
 }
