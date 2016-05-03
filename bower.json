@@ -14,8 +14,8 @@
     "tests"
   ],
   "dependencies": {
-    "three.js": "threejs#r70",
-    "stats.js": "#r11",
+    "three.js": "threejs#r76",
+    "stats.js": "#r16",
     "dat-gui": "#0.4.0"
   }
 }
