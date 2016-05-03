@@ -2,7 +2,7 @@ var SCREEN_WIDTH = window.innerWidth;
 var SCREEN_HEIGHT = window.innerHeight;
 var aspect = SCREEN_WIDTH / SCREEN_HEIGHT;
 var container: HTMLDivElement, stats;
-var camera, scene: THREE.Scene, renderer: THREE.WebGLRenderer, bird: THREE.Mesh;
+var camera, scene: THREE.Scene, renderer: THREE.WebGLRenderer, bird: Bird;
 var cameraRig: THREE.Group, activeCamera: THREE.Camera;
 var cameraPerspective: THREE.PerspectiveCamera, cameraOrtho: THREE.OrthographicCamera;
 var cameraPerspectiveHelper;
@@ -69,11 +69,7 @@ function _initCameras() {
 }
 
 function _initBird() {
-    bird = new THREE.Mesh(
-        new THREE.SphereBufferGeometry(100, 16, 8),
-        new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true })
-    );
-    scene.add(bird);
+    bird = new Bird(scene, Config.VELOCITY);
 }
 
 function _initStats() {
@@ -116,14 +112,15 @@ function animate() {
     render();
     stats.update();
 }
-var count = 0;
+var prevTime = Date.now();
 function render() {
-    count += 1;
-    bird.position.x = count;
-    cameraRig.position.x = count;
+    var currTime = Date.now();
+    var deltaSeconds = (currTime - prevTime) / 1000;
+    prevTime = currTime;
+    bird.update(deltaSeconds);
+    cameraRig.position.x = bird.position.x;
 
     renderer.clear();
-
     if (DEBUG) {
         activeHelper.visible = false;
         renderer.setViewport(0, 0, SCREEN_WIDTH / 2, SCREEN_HEIGHT);
