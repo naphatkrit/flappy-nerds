@@ -69,7 +69,7 @@ class Main {
     }
 
     private _initBird() {
-        this.bird = new Bird(this.scene, Config.VELOCITY, Config.GRAVITY);
+        this.bird = new Bird(this.scene, Config.VELOCITY, Config.GRAVITY, Config.JUMPVELOCITY);
     }
 
     private _initUpdater() {
@@ -100,6 +100,12 @@ class Main {
                     this.activeHelper = this.cameraPerspectiveHelper;
                 }
                 break;
+            case 32: /* spacebar */
+                /* put something here*/
+                // this.bird.update(10);
+                this.bird.setNeedsJump();
+                break;
+
         }
     }
 
