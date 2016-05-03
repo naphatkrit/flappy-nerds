@@ -9,8 +9,6 @@ var cameraPerspectiveHelper;
 var frustumSize = 600;
 var activeHelper;
 
-var DEBUG = true;
-
 window.onload = function() {
     init();
     animate();
@@ -42,12 +40,12 @@ function _initScene() {
 }
 
 function _initCameras() {
-    if (DEBUG) {
+    if (Config.DEBUG) {
         camera = new THREE.PerspectiveCamera(50, 0.5 * aspect, 1, 10000);
         camera.position.z = 2500;
     }
 
-    cameraPerspective = new THREE.PerspectiveCamera(50, DEBUG ? 0.5 * aspect : aspect, 150, 1000);
+    cameraPerspective = new THREE.PerspectiveCamera(50, Config.DEBUG ? 0.5 * aspect : aspect, 150, 1000);
     // counteract different front orientation of cameras vs rig
     cameraPerspective.rotation.y = Math.PI;
 
@@ -57,7 +55,7 @@ function _initCameras() {
     cameraPerspective.lookAt(new THREE.Vector3(0, 0, -1));
     activeCamera = cameraPerspective;
 
-    if (DEBUG) {
+    if (Config.DEBUG) {
         cameraPerspectiveHelper = new THREE.CameraHelper(cameraPerspective);
         scene.add(cameraPerspectiveHelper);
         activeHelper = cameraPerspectiveHelper;
@@ -91,7 +89,7 @@ function onKeyDown(event) {
     switch (event.keyCode) {
         case 80: /*P*/
             activeCamera = cameraPerspective;
-            if (DEBUG) {
+            if (Config.DEBUG) {
                 activeHelper = cameraPerspectiveHelper;
             }
             break;
@@ -121,7 +119,7 @@ function render() {
     cameraRig.position.x = bird.position.x;
 
     renderer.clear();
-    if (DEBUG) {
+    if (Config.DEBUG) {
         activeHelper.visible = false;
         renderer.setViewport(0, 0, SCREEN_WIDTH / 2, SCREEN_HEIGHT);
         renderer.render(scene, activeCamera);
