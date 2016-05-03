@@ -9,42 +9,26 @@ var cameraPerspectiveHelper;
 var frustumSize = 600;
 var activeHelper;
 
+var DEBUG = true;
+
 window.onload = function() {
     init();
     animate();
 }
 
-function init() {
+function _initContainer() {
     container = document.createElement('div');
     document.body.appendChild(container);
+    renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+    renderer.domElement.style.position = "relative";
+    container.appendChild(renderer.domElement);
+    renderer.autoClear = false;
+}
+
+function _initScene() {
     scene = new THREE.Scene();
-
-    camera = new THREE.PerspectiveCamera( 50, 0.5 * aspect, 1, 10000 );
-	camera.position.z = 2500;
-
-    //
-    cameraPerspective = new THREE.PerspectiveCamera(50, 0.5 * aspect, 150, 1000);
-    cameraPerspectiveHelper = new THREE.CameraHelper( cameraPerspective );
-	scene.add( cameraPerspectiveHelper );
-    //
-    activeCamera = cameraPerspective;
-    activeHelper = cameraPerspectiveHelper;
-    // counteract different front orientation of cameras vs rig
-    cameraPerspective.rotation.y = Math.PI;
-    cameraPerspective.position.x = 0;
-    cameraPerspective.position.y = 0;
-    cameraPerspective.position.z = 1000;
-    cameraPerspective.lookAt(new THREE.Vector3(0, 0, -1));
-
-    cameraRig = new THREE.Group();
-    cameraRig.add(cameraPerspective);
-    scene.add(cameraRig);
-    bird = new THREE.Mesh(
-        new THREE.SphereBufferGeometry(100, 16, 8),
-        new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true })
-    );
-    scene.add(bird);
-
     var geometry = new THREE.Geometry();
     for (var i = 0; i < 10000; i++) {
         var vertex = new THREE.Vector3();
@@ -55,17 +39,54 @@ function init() {
     }
     var particles = new THREE.Points(geometry, new THREE.PointsMaterial({ color: 0x888888 }));
     scene.add(particles);
-    //
-    renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
-    renderer.domElement.style.position = "relative";
-    container.appendChild(renderer.domElement);
-    renderer.autoClear = false;
-    //
+}
+
+function _initCameras() {
+    if (DEBUG) {
+        camera = new THREE.PerspectiveCamera(50, 0.5 * aspect, 1, 10000);
+        camera.position.z = 2500;
+    }
+
+    cameraPerspective = new THREE.PerspectiveCamera(50, DEBUG ? 0.5 * aspect : aspect, 150, 1000);
+    // counteract different front orientation of cameras vs rig
+    cameraPerspective.rotation.y = Math.PI;
+
+    cameraPerspective.position.x = 0;
+    cameraPerspective.position.y = 0;
+    cameraPerspective.position.z = 1000;
+    cameraPerspective.lookAt(new THREE.Vector3(0, 0, -1));
+    activeCamera = cameraPerspective;
+
+    if (DEBUG) {
+        cameraPerspectiveHelper = new THREE.CameraHelper(cameraPerspective);
+        scene.add(cameraPerspectiveHelper);
+        activeHelper = cameraPerspectiveHelper;
+    }
+
+    cameraRig = new THREE.Group();
+    cameraRig.add(cameraPerspective);
+    scene.add(cameraRig);
+}
+
+function _initBird() {
+    bird = new THREE.Mesh(
+        new THREE.SphereBufferGeometry(100, 16, 8),
+        new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true })
+    );
+    scene.add(bird);
+}
+
+function _initStats() {
     stats = new Stats();
     container.appendChild(stats.dom);
-    //
+}
+
+function init() {
+    _initContainer();
+    _initScene();
+    _initCameras();
+    _initBird();
+    _initStats();
     window.addEventListener('resize', onWindowResize, false);
     document.addEventListener('keydown', onKeyDown, false);
 }
@@ -74,6 +95,9 @@ function onKeyDown(event) {
     switch (event.keyCode) {
         case 80: /*P*/
             activeCamera = cameraPerspective;
+            if (DEBUG) {
+                activeHelper = cameraPerspectiveHelper;
+            }
             break;
     }
 }
@@ -96,15 +120,19 @@ var count = 0;
 function render() {
     count += 1;
     bird.position.x = count;
-    bird.position.y = 0;
-    bird.position.z = 0;
     cameraRig.position.x = count;
-    console.log(cameraRig.position);
+
     renderer.clear();
-    activeHelper.visible = false;
-	renderer.setViewport( 0, 0, SCREEN_WIDTH/2, SCREEN_HEIGHT );
-	renderer.render( scene, activeCamera );
-	activeHelper.visible = true;
-	renderer.setViewport( SCREEN_WIDTH/2, 0, SCREEN_WIDTH/2, SCREEN_HEIGHT );
-	renderer.render( scene, camera );
+
+    if (DEBUG) {
+        activeHelper.visible = false;
+        renderer.setViewport(0, 0, SCREEN_WIDTH / 2, SCREEN_HEIGHT);
+        renderer.render(scene, activeCamera);
+        activeHelper.visible = true;
+        renderer.setViewport(SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2, SCREEN_HEIGHT);
+        renderer.render(scene, camera);
+    } else {
+        renderer.setViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+        renderer.render(scene, activeCamera);
+    }
 }
