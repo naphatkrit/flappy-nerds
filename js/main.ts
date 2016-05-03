@@ -9,6 +9,8 @@ var cameraPerspectiveHelper;
 var frustumSize = 600;
 var activeHelper;
 
+var updater: Updater;
+
 window.onload = function() {
     init();
     animate();
@@ -70,6 +72,10 @@ function _initBird() {
     bird = new Bird(scene, Config.VELOCITY);
 }
 
+function _initUpdater() {
+    updater = new Updater(bird, cameraRig);
+}
+
 function _initStats() {
     stats = new Stats();
     container.appendChild(stats.dom);
@@ -80,6 +86,7 @@ function init() {
     _initScene();
     _initCameras();
     _initBird();
+    _initUpdater();
     _initStats();
     window.addEventListener('resize', onWindowResize, false);
     document.addEventListener('keydown', onKeyDown, false);
@@ -110,13 +117,9 @@ function animate() {
     render();
     stats.update();
 }
-var prevTime = Date.now();
+
 function render() {
-    var currTime = Date.now();
-    var deltaSeconds = (currTime - prevTime) / 1000;
-    prevTime = currTime;
-    bird.update(deltaSeconds);
-    cameraRig.position.x = bird.position.x;
+    updater.update();
 
     renderer.clear();
     if (Config.DEBUG) {
