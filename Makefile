@@ -1,5 +1,9 @@
 default: typescript
-	
+
+clean:
+	rm -f js/*.js
+	rm -f js/*.js.map
+
 npm-requirements:
 	npm install
 
