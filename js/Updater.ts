@@ -13,16 +13,15 @@ class Updater {
         this._bottomPlane = bottomPlane;
     }
 
-    private _detectCollisions() {
-        if (Collision.collide(this._bird, [this._topPlane, this._bottomPlane])) {
-            this._bird.removeFromScene();
-        }
-    }
-
     public update() {
-        this._detectCollisions();
         var currTime = Date.now();
         var deltaSeconds = (currTime - this._prevTime) / 1000;
+
+        if (Collision.collide(this._bird, [this._topPlane, this._bottomPlane])) {
+          this._bird.removeFromScene();
+          deltaSeconds = 0;
+        }
+
         this._prevTime = currTime;
         this._topPlane.update(deltaSeconds);
         this._bottomPlane.update(deltaSeconds);
