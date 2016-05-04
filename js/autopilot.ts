@@ -5,7 +5,7 @@ abstract class autopilot {
 		var ymin:number = box.min.y
 		var ymax:number = box.max.y
 
-		return (ymax - ymin) / 2.0
+		return (ymax + ymin) / 2.0
 	}
 
 	public static control(bird:Bird, targetBox:THREE.Box3) {
