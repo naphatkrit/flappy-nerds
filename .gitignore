@@ -10,6 +10,7 @@ typings
 # TypeScript
 *.js.map
 js/*.js
+js/**.js
 
 # Logs
 logs
