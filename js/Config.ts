@@ -7,4 +7,5 @@ abstract class Config {
     public static MIN_Y = -400;
     public static OBSTACLE_INTERVAL = 4500;
     public static OBSTACLE_RANGE = 1500;
+    public static RAND_SEED = 35;
 }

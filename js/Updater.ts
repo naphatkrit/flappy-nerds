@@ -7,7 +7,10 @@ class Updater {
     private _obstacles: IObstacle[];
     private _scene: THREE.Scene;
 
+    private _rand: lfsr;
+
     constructor(scene: THREE.Scene, bird: Bird, cameraRig: THREE.Group, topPlane: Plane, bottomPlane: Plane) {
+        this._rand = new lfsr(Config.RAND_SEED);
         this._prevTime = Date.now();
         this._nextObstacleTime = this._prevTime + this.obstacleInterval;
         this._bird = bird;
@@ -59,7 +62,7 @@ class Updater {
     private _nextObstacleTime: number;
 
     private get obstacleInterval() {
-        return Config.OBSTACLE_INTERVAL + Config.OBSTACLE_RANGE * (Math.random() * 2 - 1);
+        return Config.OBSTACLE_INTERVAL + Config.OBSTACLE_RANGE * (this._rand.getNext() * 2 - 1);
     }
 
     private _generateObstacles() {
@@ -68,7 +71,7 @@ class Updater {
 
             // TODO don't hardcode this 500
             var xPos = this._bird.mesh.position.x + window.innerWidth/2;
-            var obstacle = new StandardObstacle(this._scene, new THREE.Box3(new THREE.Vector3(xPos, -150 + 50 * (Math.random() * 2 - 1), -100), new THREE.Vector3(xPos + 100, 150 + 50 * (Math.random() * 2 - 1), 100)), Config.MIN_Y, Config.MAX_Y);
+            var obstacle = new StandardObstacle(this._scene, new THREE.Box3(new THREE.Vector3(xPos, -150 + 50 * (this._rand.getNext() * 2 - 1), -100), new THREE.Vector3(xPos + 100, 150 + 50 * (this._rand.getNext() * 2 - 1), 100)), Config.MIN_Y, Config.MAX_Y);
 
             this._obstacles.push(obstacle);
         }
