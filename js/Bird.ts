@@ -15,10 +15,12 @@ class Bird implements I3DObject {
     constructor(scene: THREE.Scene, initialVelocity: THREE.Vector3, gravity: THREE.Vector3, jumpVelocity: THREE.Vector3) {
         var jsonLoader = new THREE.JSONLoader();
         jsonLoader.load('animated_models/humming_bird.js',
-        	( geometry ) => {
+        	( geometry, mat ) => {
+                //var material = new THREE.MeshFaceMaterial( mat );
+                var material = new THREE.TextureLoader().load( "js/textures/bird.jpg" );
         		this._mesh = new THREE.Mesh(
                     geometry,
-                    new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true })
+                    new THREE.MeshBasicMaterial({ color: 0xffffff, map: material, wireframe: true })
                 );
                 this._mesh.position.x = 0;
                 this._mesh.position.y = 0;
