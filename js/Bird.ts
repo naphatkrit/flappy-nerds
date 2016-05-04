@@ -3,7 +3,7 @@ enum BirdState {
     Dead,
 }
 class Bird implements I3DObject {
-    private _mesh: THREE.Mesh;
+    private _mesh: THREE.Mesh = null;
     private _velocity: THREE.Vector3;
     private _gravity: THREE.Vector3;
     private _jumpVelocity: THREE.Vector3;
@@ -12,13 +12,28 @@ class Bird implements I3DObject {
     private _state: BirdState;
 
     constructor(scene: THREE.Scene, initialVelocity: THREE.Vector3, gravity: THREE.Vector3, jumpVelocity: THREE.Vector3) {
-        this._mesh = new THREE.Mesh(
-            new THREE.SphereGeometry(30, 16, 8),
-            new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true })
+        var jsonLoader = new THREE.JSONLoader();
+        jsonLoader.load('animated_models/humming_bird.js',
+        	( geometry ) => {
+        		this._mesh = new THREE.Mesh(
+                    geometry,
+                    new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true })
+                );
+                this._mesh.position.x = 0;
+                this._mesh.position.y = 0;
+                this._mesh.position.z = 0;
+                this._mesh.rotation.y = Math.PI / 2;
+                this._mesh.scale.set(5, 5, 5);
+        		scene.add( this._mesh );
+
+                // var mixer = new THREE.AnimationMixer( this._mesh );
+                // var clip = THREE.AnimationClip.CreateFromMorphTargetSequence( 'gallop', geometry.morphTargets, 30 );
+			    // mixer.clipAction( clip ).setDuration( 1 ).play();
+        	}
         );
+
         this._velocity = initialVelocity.clone();
         this._gravity = gravity.clone();
-        scene.add(this._mesh);
         this._needsJump = false;
         this._jumpVelocity = jumpVelocity.clone();
         this._scene = scene;

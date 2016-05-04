@@ -22,6 +22,9 @@ class Updater {
     }
 
     public update() {
+        if (this._bird.mesh == null) {
+            return;
+        }
         this._generateObstacles();
 
         var obstacleObjects = new Array<I3DObject>();
@@ -29,6 +32,7 @@ class Updater {
             obstacleObjects = obstacleObjects.concat(this._obstacles[i].objects);
         }
         obstacleObjects.push(this._topPlane, this._bottomPlane);
+
 
         var collision = Collision.collide(this._bird, obstacleObjects);
 
