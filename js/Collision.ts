@@ -1,6 +1,6 @@
 abstract class Collision {
     private static rayCaster = new THREE.Raycaster();
-    public static collide(src: I3DObject, collidables: I3DObject[]): boolean {
+    public static collide(src: I3DObject, collidables: I3DObject[]): I3DObject {
         var collidableMeshList = [];
         for (var i = 0; i < collidables.length; ++i) {
             collidableMeshList.push(collidables[i].mesh);
@@ -19,9 +19,16 @@ abstract class Collision {
             this.rayCaster.set(src.mesh.position, directionVector.clone().normalize());
             var collisionResults = this.rayCaster.intersectObjects(collidableMeshList);
             if (collisionResults.length > 0 && collisionResults[0].distance < directionVector.length()) {
-                return true;
+                var result = collisionResults[0]['object'];
+                for (var i = 0; i < collidables.length; ++i) {
+                    if (result === collidableMeshList[i]) {
+                        return collidables[i];
+                    }
+                }
+                console.warn('Inconsistency in collision detected. Intersected object not in list of collidables.')
+                return null;
             }
         }
-        return false;
+        return null;
     }
 }

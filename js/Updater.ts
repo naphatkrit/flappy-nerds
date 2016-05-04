@@ -14,12 +14,15 @@ class Updater {
     }
 
     public update() {
-        var currTime = Date.now();
-        var deltaSeconds = (currTime - this._prevTime) / 1000;
 
-        if (Collision.collide(this._bird, [this._topPlane, this._bottomPlane])) {
+        var collision = Collision.collide(this._bird, [this._topPlane, this._bottomPlane]);
+
+        if (collision !== null) {
             return;
         }
+
+        var currTime = Date.now();
+        var deltaSeconds = (currTime - this._prevTime) / 1000;
 
         this._prevTime = currTime;
         this._topPlane.update(deltaSeconds);
