@@ -4,18 +4,19 @@ class Main {
     private aspect = window.innerWidth / window.innerHeight;
     private container: HTMLDivElement;
     private stats;
-    private camera;
     private scene: THREE.Scene
     private renderer: THREE.WebGLRenderer;
     private bird: Bird;
     private cameraRig: THREE.Group;
     private activeCamera: THREE.Camera;
+    private activeCamera2: THREE.Camera;
     private cameraPerspective: THREE.PerspectiveCamera;
     private cameraPerspectiveHelper: THREE.CameraHelper;
     private cameraFirstPerson: THREE.PerspectiveCamera;
     private cameraFirstPersonHelper: THREE.CameraHelper;
     private frustumSize = 600;
     private activeHelper;
+    private activeHelper2;
 
     private topPlane: Plane;
     private bottomPlane: Plane;
@@ -53,12 +54,8 @@ class Main {
     }
 
     private _initCameras() {
-        if (Config.DEBUG) {
-            this.camera = new THREE.PerspectiveCamera(50, 0.5 * this.aspect, 1, 10000);
-            this.camera.position.z = 2500;
-        }
 
-        this.cameraPerspective = new THREE.PerspectiveCamera(50, Config.DEBUG ? 0.5 * this.aspect : this.aspect, 150, 1000);
+        this.cameraPerspective = new THREE.PerspectiveCamera(50, 0.5 * this.aspect, 150, 1000);
         // counteract different front orientation of cameras vs rig
         this.cameraPerspective.rotation.y = Math.PI;
 
@@ -67,7 +64,7 @@ class Main {
         this.cameraPerspective.position.z = 1000;
         this.cameraPerspective.lookAt(new THREE.Vector3(0, 0, -1));
 
-        this.cameraFirstPerson = new THREE.PerspectiveCamera(50, Config.DEBUG ? 0.5 * this.aspect : this.aspect, Config.FIRST_PERSON_DISTANCE - 100, Config.FIRST_PERSON_DISTANCE + 3000);
+        this.cameraFirstPerson = new THREE.PerspectiveCamera(50, 0.5 * this.aspect, Config.FIRST_PERSON_DISTANCE - 100, Config.FIRST_PERSON_DISTANCE + 3000);
         // counteract different front orientation of cameras vs rig
         this.cameraFirstPerson.rotation.y = Math.PI;
 
@@ -76,14 +73,16 @@ class Main {
         this.cameraFirstPerson.position.z = 0;
         this.cameraFirstPerson.lookAt(new THREE.Vector3(0, 0, 0));
 
-        this.activeCamera = this.cameraFirstPerson;
+        this.activeCamera = this.cameraPerspective;
+        this.activeCamera2 = this.cameraFirstPerson;
 
         if (Config.DEBUG) {
             this.cameraPerspectiveHelper = new THREE.CameraHelper(this.cameraPerspective);
             this.scene.add(this.cameraPerspectiveHelper);
             this.cameraFirstPersonHelper = new THREE.CameraHelper(this.cameraFirstPerson);
             this.scene.add(this.cameraFirstPersonHelper);
-            this.activeHelper = this.cameraFirstPersonHelper;
+            this.activeHelper = this.cameraPerspectiveHelper;
+            this.activeHelper2 = this.cameraFirstPersonHelper;
         }
 
         this.cameraRig = new THREE.Group();
@@ -131,6 +130,18 @@ class Main {
                     this.activeHelper = this.cameraFirstPersonHelper;
                 }
                 break;
+            case 81: /*q*/
+                this.activeCamera2 = this.cameraPerspective;
+                if (Config.DEBUG) {
+                    this.activeHelper2 = this.cameraPerspectiveHelper;
+                }
+                break;
+            case 87: /*w*/
+                this.activeCamera2 = this.cameraFirstPerson;
+                if (Config.DEBUG) {
+                    this.activeHelper2 = this.cameraFirstPersonHelper;
+                }
+                break;
             case 32: /* spacebar */
                 /* put something here*/
                 // this.bird.update(10);
@@ -161,17 +172,10 @@ class Main {
         this.updater.update();
 
         this.renderer.clear();
-        if (Config.DEBUG) {
-            this.activeHelper.visible = false;
-            this.renderer.setViewport(0, 0, this.SCREEN_WIDTH / 2, this.SCREEN_HEIGHT);
-            this.renderer.render(this.scene, this.activeCamera);
-            this.activeHelper.visible = true;
-            this.renderer.setViewport(this.SCREEN_WIDTH / 2, 0, this.SCREEN_WIDTH / 2, this.SCREEN_HEIGHT);
-            this.renderer.render(this.scene, this.camera);
-        } else {
-            this.renderer.setViewport(0, 0, this.SCREEN_WIDTH, this.SCREEN_HEIGHT);
-            this.renderer.render(this.scene, this.activeCamera);
-        }
+        this.renderer.setViewport(0, 0, this.SCREEN_WIDTH / 2, this.SCREEN_HEIGHT);
+        this.renderer.render(this.scene, this.activeCamera);
+        this.renderer.setViewport(this.SCREEN_WIDTH / 2, 0, this.SCREEN_WIDTH / 2, this.SCREEN_HEIGHT);
+        this.renderer.render(this.scene, this.activeCamera2);
     }
 }
 

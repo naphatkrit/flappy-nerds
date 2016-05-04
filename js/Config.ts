@@ -1,6 +1,6 @@
 abstract class Config {
     public static VELOCITY = new THREE.Vector3(100, 0, 0);
-    public static DEBUG = true;
+    public static DEBUG = false;
     public static GRAVITY = new THREE.Vector3(0, -2000, 0);
     public static JUMP_VELOCITY = new THREE.Vector3(100, 600, 0);
     public static MAX_Y = 400;
