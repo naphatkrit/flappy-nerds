@@ -5,11 +5,13 @@ class Plane implements I3DObject {
 
     constructor(scene: THREE.Scene, y: number, velocity: THREE.Vector3) {
         this._mesh = new THREE.Mesh(
-            new THREE.PlaneBufferGeometry(1000, 1000, 1, 1),
-            new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: false})
+            new THREE.PlaneGeometry(1000, 1000, 1, 1),
+            new THREE.MeshBasicMaterial({ color: 0x00ffff, wireframe: false})
         );
         this._mesh.translateY(y);
         this._mesh.rotateX((y > 0 ? 1 : -1) * Math.PI / 2.0);
+        // force the transforms to take effect right away, important for collision detection
+        this._mesh.updateMatrixWorld(true);
         this._velocity = velocity.clone();
         scene.add(this._mesh);
     }

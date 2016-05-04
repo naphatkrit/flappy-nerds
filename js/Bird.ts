@@ -3,11 +3,12 @@ class Bird implements I3DObject {
     private _velocity: THREE.Vector3;
     private _gravity: THREE.Vector3;
     private _jumpvelocity: THREE.Vector3;
+    private _scene: THREE.Scene;
     private needsJump: boolean;
 
     constructor(scene: THREE.Scene, initialVelocity: THREE.Vector3, gravity: THREE.Vector3, jumpvelocity: THREE.Vector3) {
         this._mesh = new THREE.Mesh(
-            new THREE.SphereBufferGeometry(100, 16, 8),
+            new THREE.SphereGeometry(100, 16, 8),
             new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true })
         );
         this._velocity = initialVelocity.clone();
@@ -15,6 +16,7 @@ class Bird implements I3DObject {
         scene.add(this._mesh);
         this.needsJump = false;
         this._jumpvelocity = jumpvelocity.clone();
+        this._scene = scene;
     }
 
     public get mesh() {
@@ -28,6 +30,10 @@ class Bird implements I3DObject {
         }
         this._velocity.addScaledVector(this._gravity, deltaSeconds);
         this._mesh.position.addScaledVector(this._velocity, deltaSeconds);
+    }
+
+    public removeFromScene() {
+        this._scene.remove(this._mesh);
     }
 
     public setNeedsJump() {
