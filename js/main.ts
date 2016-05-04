@@ -78,7 +78,7 @@ class Main {
     }
 
     private _initBird() {
-        this.bird = new Bird(this.scene, Config.VELOCITY, Config.GRAVITY, Config.JUMPVELOCITY);
+        this.bird = new Bird(this.scene, Config.VELOCITY, Config.GRAVITY, Config.JUMP_VELOCITY);
     }
 
     private _initUpdater() {
