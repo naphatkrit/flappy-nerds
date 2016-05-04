@@ -1,8 +1,8 @@
 default: typescript
 
 clean:
-	rm -f js/*.js
-	rm -f js/*.js.map
+	find js -name '*.js' -delete
+	find js -name '*.js.map' -delete
 
 npm-requirements:
 	npm install
