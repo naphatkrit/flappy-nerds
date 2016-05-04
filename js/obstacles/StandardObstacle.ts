@@ -5,7 +5,12 @@ class StandardObstacle implements IObstacle {
     private _safeBox: THREE.Box3;
 
     constructor(scene: THREE.Scene, boundingBox: THREE.Box3, minY: number, maxY: number) {
-        var material = new THREE.MeshBasicMaterial({ color: 0xff00ff, wireframe: false});
+        //var material = new THREE.MeshBasicMaterial({ color: 0x0000ff, wireframe: false});
+        var texture = new THREE.TextureLoader().load( "js/textures/water.jpg" );
+        var material = new THREE.MeshBasicMaterial(
+            {map: texture,
+            side: THREE.DoubleSide}
+            );
         var topBox = new THREE.BoxGeometry(boundingBox.max.x - boundingBox.min.x, maxY - boundingBox.max.y, boundingBox.max.z - boundingBox.min.z);
         var topMesh = new THREE.Mesh(topBox, material);
 
