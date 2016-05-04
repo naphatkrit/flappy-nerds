@@ -10,6 +10,7 @@ class Bird implements I3DObject {
     private _scene: THREE.Scene;
     private _needsJump: boolean;
     private _state: BirdState;
+    private _height: number;
 
     constructor(scene: THREE.Scene, initialVelocity: THREE.Vector3, gravity: THREE.Vector3, jumpVelocity: THREE.Vector3) {
         var jsonLoader = new THREE.JSONLoader();
@@ -25,7 +26,8 @@ class Bird implements I3DObject {
                 this._mesh.rotation.y = Math.PI / 2;
                 this._mesh.scale.set(5, 5, 5);
         		scene.add( this._mesh );
-
+                this._mesh.geometry.computeBoundingBox();
+                this._height = (this._mesh.geometry.boundingBox.max.y - this._mesh.geometry.boundingBox.min.y);
                 // var mixer = new THREE.AnimationMixer( this._mesh );
                 // var clip = THREE.AnimationClip.CreateFromMorphTargetSequence( 'gallop', geometry.morphTargets, 30 );
 			    // mixer.clipAction( clip ).setDuration( 1 ).play();
@@ -46,6 +48,10 @@ class Bird implements I3DObject {
 
     public get collisionEffect() {
         return CollisionEffect.None;
+    }
+
+    public get height() {
+        return this._height;
     }
 
     public update(deltaSeconds: number) {

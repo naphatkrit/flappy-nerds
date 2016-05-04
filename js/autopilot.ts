@@ -1,17 +1,21 @@
 abstract class autopilot {
-	private static thresh:number = 0.0
 
-	private static getTargetHeight(box:THREE.Box3):number{
-		var ymin:number = box.min.y
-		var ymax:number = box.max.y
+    private static getTargetHeight(box:THREE.Box3):number{
+        if (box == null) {
+            return 0;
+        }
 
-		return (ymax + ymin) / 2.0
-	}
+        var ymin:number = box.min.y
+        var ymax:number = box.max.y
 
-	public static control(bird:Bird, targetBox:THREE.Box3) {
-		var birdPosY: number = bird.mesh.position.y
-		if ((birdPosY - this.getTargetHeight(targetBox)) < this.thresh) {
-			bird.setNeedsJump() 
-		}
-	}
+        return (ymax + ymin) / 2.0
+    }
+
+    public static control(bird:Bird, targetBox:THREE.Box3) {
+        var birdPosY: number = bird.mesh.position.y
+        var height = bird.height
+        if ((birdPosY - this.getTargetHeight(targetBox)) < -height - 50) {
+            bird.setNeedsJump() 
+        }
+    }
 }

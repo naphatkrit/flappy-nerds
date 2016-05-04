@@ -56,6 +56,13 @@ class Updater {
         var currTime = Date.now();
         var deltaSeconds = (currTime - this._prevTime) / 1000;
 
+        if (this._nextVisibleOstacle() != null) {
+            var controlTarget = this._nextVisibleOstacle().safeBox
+        }
+        else {
+            controlTarget = null
+        }
+        autopilot.control(this._bird, controlTarget)
         this._prevTime = currTime;
         this._topPlane.update(deltaSeconds);
         this._bottomPlane.update(deltaSeconds);
