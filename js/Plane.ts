@@ -1,4 +1,4 @@
-class Plane {
+class Plane implements I3DObject {
 
     private _mesh: THREE.Mesh;
     private _velocity: THREE.Vector3;
@@ -12,6 +12,10 @@ class Plane {
         this._mesh.rotateX((y > 0 ? 1 : -1) * Math.PI / 2.0);
         this._velocity = velocity.clone();
         scene.add(this._mesh);
+    }
+
+    public get mesh() {
+        return this._mesh;
     }
 
     public update(deltaSeconds: number) {

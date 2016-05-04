@@ -1,4 +1,4 @@
-class Bird {
+class Bird implements I3DObject {
     private _mesh: THREE.Mesh;
     private _velocity: THREE.Vector3;
     private _gravity: THREE.Vector3;
@@ -17,6 +17,10 @@ class Bird {
         this._jumpvelocity = jumpvelocity.clone();
     }
 
+    public get mesh() {
+        return this._mesh;
+    }
+
     public update(deltaSeconds: number) {
         if (this.needsJump) {
             this._velocity = this._jumpvelocity.clone();
@@ -26,9 +30,6 @@ class Bird {
         this._mesh.position.addScaledVector(this._velocity, deltaSeconds);
     }
 
-    public get position() {
-        return this._mesh.position.clone();
-    }
     public setNeedsJump() {
         this.needsJump = true;
     }

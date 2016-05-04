@@ -20,6 +20,6 @@ class Updater {
         this._topPlane.update(deltaSeconds);
         this._bottomPlane.update(deltaSeconds);
         this._bird.update(deltaSeconds);
-        this._cameraRig.position.x = this._bird.position.x;
+        this._cameraRig.position.x = this._bird.mesh.position.x;
     }
 }
