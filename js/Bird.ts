@@ -8,7 +8,7 @@ class Bird implements I3DObject {
 
     constructor(scene: THREE.Scene, initialVelocity: THREE.Vector3, gravity: THREE.Vector3, jumpVelocity: THREE.Vector3) {
         this._mesh = new THREE.Mesh(
-            new THREE.SphereGeometry(100, 16, 8),
+            new THREE.SphereGeometry(30, 16, 8),
             new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true })
         );
         this._velocity = initialVelocity.clone();
