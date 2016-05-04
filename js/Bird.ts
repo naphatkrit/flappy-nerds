@@ -13,6 +13,9 @@ class Bird implements I3DObject {
     private _height: number;
     private _mixer: THREE.AnimationMixer;
 
+    private _counter: number = 0;
+    private _needmix: boolean = false;
+
     constructor(scene: THREE.Scene, initialVelocity: THREE.Vector3, gravity: THREE.Vector3, jumpVelocity: THREE.Vector3) {
         var jsonLoader = new THREE.JSONLoader();
         jsonLoader.load('animated_models/humming_bird.js',
@@ -58,14 +61,23 @@ class Bird implements I3DObject {
     }
 
     public update(deltaSeconds: number) {
-        if (this._mixer) {
-            this._mixer.update(deltaSeconds);
+        if (this._needmix){
+            if (this._mixer) {
+                this._mixer.update(deltaSeconds);
+            }
+            this._counter = this._counter + 1;
+            if (this._counter == 15) {
+                this._needmix = false;
+            }
         }
 
         if (this._needsJump && this._state == BirdState.Alive) {
             this._velocity = this._jumpVelocity.clone();
             this._needsJump = false;
+            this._needmix = true;
+            this._counter = 0;
         }
+
         this._velocity.addScaledVector(this._gravity, deltaSeconds);
         this._mesh.position.addScaledVector(this._velocity, deltaSeconds);
     }
