@@ -59,7 +59,7 @@ class Updater {
     private _nextObstacleTime: number;
 
     private get obstacleInterval() {
-        return 4000 + 1500 * (Math.random() * 2 - 1);
+        return Config.OBSTACLE_INTERVAL + Config.OBSTACLE_RANGE * (Math.random() * 2 - 1);
     }
 
     private _generateObstacles() {
@@ -67,8 +67,8 @@ class Updater {
             this._nextObstacleTime += this.obstacleInterval;
 
             // TODO don't hardcode this 500
-            var xPos = this._bird.mesh.position.x + 500;
-            var obstacle = new StandardObstacle(this._scene, new THREE.Box3(new THREE.Vector3(xPos, -150 + 50 * (Math.random() * 2 - 1), -100), new THREE.Vector3(xPos + 100, 150 + 50 * (Math.random() * 2 - 1), 100)), -400, 400);
+            var xPos = this._bird.mesh.position.x + window.innerWidth/2;
+            var obstacle = new StandardObstacle(this._scene, new THREE.Box3(new THREE.Vector3(xPos, -150 + 50 * (Math.random() * 2 - 1), -100), new THREE.Vector3(xPos + 100, 150 + 50 * (Math.random() * 2 - 1), 100)), Config.MIN_Y, Config.MAX_Y);
 
             this._obstacles.push(obstacle);
         }
