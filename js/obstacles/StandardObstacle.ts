@@ -9,10 +9,12 @@ class StandardObstacle implements IObstacle {
         var topMesh = new THREE.Mesh(topBox, material);
 
         topMesh.translateY(maxY - topBox.parameters.height / 2);
+        topMesh.translateX(boundingBox.min.x);
 
         var bottomBox = new THREE.BoxGeometry(boundingBox.max.x - boundingBox.min.x, boundingBox.min.y - minY, boundingBox.max.z - boundingBox.min.z);
         var bottomMesh = new THREE.Mesh(bottomBox, material);
         bottomMesh.translateY(minY + bottomBox.parameters.height / 2);
+        bottomMesh.translateX(boundingBox.min.x);
 
         scene.add(topMesh);
         scene.add(bottomMesh);
