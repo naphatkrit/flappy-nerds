@@ -4,18 +4,30 @@ class Updater {
     private _cameraRig: THREE.Group;
     private _topPlane: Plane;
     private _bottomPlane: Plane;
+    private _obstacles: IObstacle[];
+    private _scene: THREE.Scene;
 
-    constructor(bird: Bird, cameraRig: THREE.Group, topPlane: Plane, bottomPlane: Plane) {
+    constructor(scene: THREE.Scene, bird: Bird, cameraRig: THREE.Group, topPlane: Plane, bottomPlane: Plane) {
         this._prevTime = Date.now();
+        this._nextObstacleTime = this._prevTime + this.obstacleInterval;
         this._bird = bird;
         this._cameraRig = cameraRig;
         this._topPlane = topPlane;
         this._bottomPlane = bottomPlane;
+        this._obstacles = [];
+        this._scene = scene;
     }
 
     public update() {
+        this._generateObstacles();
 
-        var collision = Collision.collide(this._bird, [this._topPlane, this._bottomPlane]);
+        var obstacleObjects = new Array<I3DObject>();
+        for (var i = 0; i < this._obstacles.length; ++i) {
+            obstacleObjects = obstacleObjects.concat(this._obstacles[i].objects);
+        }
+        obstacleObjects.push(this._topPlane, this._bottomPlane);
+
+        var collision = Collision.collide(this._bird, obstacleObjects);
 
         if (collision !== null) {
             switch (collision.collisionEffect) {
@@ -42,5 +54,23 @@ class Updater {
         this._bottomPlane.update(deltaSeconds);
         this._bird.update(deltaSeconds);
         this._cameraRig.position.x = this._bird.mesh.position.x;
+    }
+
+    private _nextObstacleTime: number;
+
+    private get obstacleInterval() {
+        return 4000 + 1500 * (Math.random() * 2 - 1);
+    }
+
+    private _generateObstacles() {
+        if (this._prevTime > this._nextObstacleTime) {
+            this._nextObstacleTime += this.obstacleInterval;
+
+            // TODO don't hardcode this 500
+            var xPos = this._bird.mesh.position.x + 500;
+            var obstacle = new StandardObstacle(this._scene, new THREE.Box3(new THREE.Vector3(xPos, -150 + 50 * (Math.random() * 2 - 1), -100), new THREE.Vector3(xPos + 100, 150 + 50 * (Math.random() * 2 - 1), 100)), -400, 400);
+
+            this._obstacles.push(obstacle);
+        }
     }
 }

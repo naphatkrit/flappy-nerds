@@ -82,7 +82,7 @@ class Main {
     }
 
     private _initUpdater() {
-        this.updater = new Updater(this.bird, this.cameraRig, this.topPlane, this.bottomPlane);
+        this.updater = new Updater(this.scene, this.bird, this.cameraRig, this.topPlane, this.bottomPlane);
     }
 
     private _initStats() {
