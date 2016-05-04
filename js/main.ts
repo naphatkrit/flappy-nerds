@@ -55,7 +55,7 @@ class Main {
 
     private _initCameras() {
 
-        this.cameraPerspective = new THREE.PerspectiveCamera(50, 0.5 * this.aspect, 150, 1000);
+        this.cameraPerspective = new THREE.PerspectiveCamera(50, 0.5 * this.aspect, 150, 1500);
         // counteract different front orientation of cameras vs rig
         this.cameraPerspective.rotation.y = Math.PI;
 

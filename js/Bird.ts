@@ -11,6 +11,7 @@ class Bird implements I3DObject {
     private _needsJump: boolean;
     private _state: BirdState;
     private _height: number;
+    private _mixer: THREE.AnimationMixer;
 
     constructor(scene: THREE.Scene, initialVelocity: THREE.Vector3, gravity: THREE.Vector3, jumpVelocity: THREE.Vector3) {
         var jsonLoader = new THREE.JSONLoader();
@@ -20,20 +21,20 @@ class Bird implements I3DObject {
                 var material = new THREE.TextureLoader().load( "js/textures/bird.jpg" );
         		this._mesh = new THREE.Mesh(
                     geometry,
-                    new THREE.MeshBasicMaterial({ color: 0xffffff, map: material, wireframe: true })
+                    new THREE.MeshBasicMaterial({ color: 0xffffff, map: material, wireframe: true, morphTargets: true })
                 );
                 this._mesh.position.x = 0;
                 this._mesh.position.y = 0;
                 this._mesh.position.z = 0;
                 this._mesh.rotation.y = Math.PI / 2;
                 this._mesh.scale.set(5, 5, 5);
-        		scene.add( this._mesh );
+                scene.add(this._mesh);
                 this._mesh.geometry.computeBoundingBox();
                 this._height = (this._mesh.geometry.boundingBox.max.y - this._mesh.geometry.boundingBox.min.y);
-                // var mixer = new THREE.AnimationMixer( this._mesh );
-                // var clip = THREE.AnimationClip.CreateFromMorphTargetSequence( 'gallop', geometry.morphTargets, 30 );
-			    // mixer.clipAction( clip ).setDuration( 1 ).play();
-        	}
+                this._mixer = new THREE.AnimationMixer(this._mesh);
+                var clip = THREE.AnimationClip.CreateFromMorphTargetSequence('gallop', geometry.morphTargets, 30);
+                this._mixer.clipAction(clip).setDuration(1).play();
+            }
         );
 
         this._velocity = initialVelocity.clone();
@@ -57,9 +58,13 @@ class Bird implements I3DObject {
     }
 
     public update(deltaSeconds: number) {
+        if (this._mixer) {
+            this._mixer.update(deltaSeconds);
+        }
+
         if (this._needsJump && this._state == BirdState.Alive) {
             this._velocity = this._jumpVelocity.clone();
-            this._needsJump  = false;
+            this._needsJump = false;
         }
         this._velocity.addScaledVector(this._gravity, deltaSeconds);
         this._mesh.position.addScaledVector(this._velocity, deltaSeconds);
