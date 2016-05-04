@@ -69,9 +69,11 @@ class Updater {
         if (this._prevTime > this._nextObstacleTime) {
             this._nextObstacleTime += this.obstacleInterval;
 
-            // TODO don't hardcode this 500
             var xPos = this._bird.mesh.position.x + window.innerWidth/2;
-            var obstacle = new StandardObstacle(this._scene, new THREE.Box3(new THREE.Vector3(xPos, -150 + 50 * (this._rand.getNext() * 2 - 1), -100), new THREE.Vector3(xPos + 100, 150 + 50 * (this._rand.getNext() * 2 - 1), 100)), Config.MIN_Y, Config.MAX_Y);
+
+            var boxSize = Config.OBSTACLE_BOX_SIZE + Config.OBSTACLE_BOX_RANGE * (this._rand.getNext() * 2 - 1);
+            var yCenter = (Config.MAX_Y - Config.MIN_Y - boxSize)/2 * (this._rand.getNext() * 2 - 1);
+            var obstacle = new StandardObstacle(this._scene, new THREE.Box3(new THREE.Vector3(xPos, yCenter - boxSize/2, -100), new THREE.Vector3(xPos + 100, yCenter + boxSize/2, 100)), Config.MIN_Y, Config.MAX_Y);
 
             this._obstacles.push(obstacle);
         }

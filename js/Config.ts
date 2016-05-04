@@ -8,4 +8,7 @@ abstract class Config {
     public static OBSTACLE_INTERVAL = 4500;
     public static OBSTACLE_RANGE = 1500;
     public static RAND_SEED = 35;
+    public static OBSTACLE_BOX_SIZE = (Config.MAX_Y - Config.MIN_Y)/3;
+    public static OBSTACLE_BOX_RANGE = Config.OBSTACLE_BOX_SIZE / 3;
+    public static OBSTACLE_BOX_Y_RANGE = (Config.MAX_Y - Config.MIN_Y - Config.OBSTACLE_BOX_SIZE - Config.OBSTACLE_BOX_RANGE) / 2;
 }
