@@ -82,4 +82,14 @@ class Updater {
             this._obstacles.push(obstacle);
         }
     }
+
+    private _nextVisibleOstacle(): IObstacle {
+        var xPos = this._bird.mesh.position.x;
+        for (var i = 0; i < this._obstacles.length; ++i) {
+            if (this._obstacles[i].safeBox.max.x > xPos) {
+                return this._obstacles[i];
+            }
+        }
+        return null;
+    }
 }
