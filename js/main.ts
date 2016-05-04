@@ -12,6 +12,8 @@ class Main {
     private activeCamera: THREE.Camera;
     private cameraPerspective: THREE.PerspectiveCamera;
     private cameraPerspectiveHelper: THREE.CameraHelper;
+    private cameraFirstPerson: THREE.PerspectiveCamera;
+    private cameraFirstPersonHelper: THREE.CameraHelper;
     private frustumSize = 600;
     private activeHelper;
 
@@ -64,16 +66,29 @@ class Main {
         this.cameraPerspective.position.y = 0;
         this.cameraPerspective.position.z = 1000;
         this.cameraPerspective.lookAt(new THREE.Vector3(0, 0, -1));
-        this.activeCamera = this.cameraPerspective;
+
+        this.cameraFirstPerson = new THREE.PerspectiveCamera(50, Config.DEBUG ? 0.5 * this.aspect : this.aspect, Config.FIRST_PERSON_DISTANCE - 100, Config.FIRST_PERSON_DISTANCE + 3000);
+        // counteract different front orientation of cameras vs rig
+        this.cameraFirstPerson.rotation.y = Math.PI;
+
+        this.cameraFirstPerson.position.x = -Config.FIRST_PERSON_DISTANCE;
+        this.cameraFirstPerson.position.y = 0;
+        this.cameraFirstPerson.position.z = 0;
+        this.cameraFirstPerson.lookAt(new THREE.Vector3(0, 0, 0));
+
+        this.activeCamera = this.cameraFirstPerson;
 
         if (Config.DEBUG) {
             this.cameraPerspectiveHelper = new THREE.CameraHelper(this.cameraPerspective);
             this.scene.add(this.cameraPerspectiveHelper);
-            this.activeHelper = this.cameraPerspectiveHelper;
+            this.cameraFirstPersonHelper = new THREE.CameraHelper(this.cameraFirstPerson);
+            this.scene.add(this.cameraFirstPersonHelper);
+            this.activeHelper = this.cameraFirstPersonHelper;
         }
 
         this.cameraRig = new THREE.Group();
         this.cameraRig.add(this.cameraPerspective);
+        this.cameraRig.add(this.cameraFirstPerson);
         this.scene.add(this.cameraRig);
     }
 
@@ -93,8 +108,8 @@ class Main {
     constructor() {
         this._initContainer();
         this._initScene();
-        this._initCameras();
         this._initBird();
+        this._initCameras();
         this._initPlanes();
         this._initUpdater();
         this._initStats();
@@ -104,10 +119,16 @@ class Main {
 
     private onKeyDown(event) {
         switch (event.keyCode) {
-            case 80: /*P*/
+            case 49: /*1*/
                 this.activeCamera = this.cameraPerspective;
                 if (Config.DEBUG) {
                     this.activeHelper = this.cameraPerspectiveHelper;
+                }
+                break;
+            case 50: /*2*/
+                this.activeCamera = this.cameraFirstPerson;
+                if (Config.DEBUG) {
+                    this.activeHelper = this.cameraFirstPersonHelper;
                 }
                 break;
             case 32: /* spacebar */
@@ -126,6 +147,8 @@ class Main {
         this.renderer.setSize(this.SCREEN_WIDTH, this.SCREEN_HEIGHT);
         this.cameraPerspective.aspect = this.aspect;
         this.cameraPerspective.updateProjectionMatrix();
+        this.cameraFirstPerson.aspect = this.aspect;
+        this.cameraFirstPerson.updateProjectionMatrix();
     }
 
     public animate() {
