@@ -18,8 +18,7 @@ class Updater {
         var deltaSeconds = (currTime - this._prevTime) / 1000;
 
         if (Collision.collide(this._bird, [this._topPlane, this._bottomPlane])) {
-          this._bird.removeFromScene();
-          deltaSeconds = 0;
+            return;
         }
 
         this._prevTime = currTime;
