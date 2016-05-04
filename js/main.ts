@@ -46,8 +46,8 @@ class Main {
 
     private _initPlanes() {
         // the y positions should be close to the far plane of the perspective camera / 2
-        this.topPlane = new Plane(this.scene, 400, Config.VELOCITY);
-        this.bottomPlane = new Plane(this.scene, -400, Config.VELOCITY);
+        this.topPlane = new Plane(this.scene, 400, Config.VELOCITY, CollisionEffect.Fall);
+        this.bottomPlane = new Plane(this.scene, -400, Config.VELOCITY, CollisionEffect.Stop);
     }
 
     private _initCameras() {

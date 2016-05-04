@@ -18,7 +18,20 @@ class Updater {
         var collision = Collision.collide(this._bird, [this._topPlane, this._bottomPlane]);
 
         if (collision !== null) {
-            return;
+            switch (collision.collisionEffect) {
+                case CollisionEffect.None:
+                    break;
+                case CollisionEffect.Fall:
+                    this._bird.fall();
+                    this._topPlane.stop();
+                    this._bottomPlane.stop();
+                    break;
+                case CollisionEffect.Stop:
+                    this._bird.die();
+                    this._topPlane.stop();
+                    this._bottomPlane.stop();
+                    return;
+            }
         }
 
         var currTime = Date.now();

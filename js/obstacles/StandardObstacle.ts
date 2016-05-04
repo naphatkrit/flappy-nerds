@@ -19,8 +19,8 @@ class StandardObstacle implements IObstacle {
         topMesh.updateMatrixWorld(true);
         bottomMesh.updateMatrixWorld(true);
 
-        this._topObject = new MeshObject(topMesh);
-        this._bottomObject = new MeshObject(bottomMesh);
+        this._topObject = new MeshObject(topMesh, CollisionEffect.Fall);
+        this._bottomObject = new MeshObject(bottomMesh, CollisionEffect.Stop);
     }
 
     public get objects() {

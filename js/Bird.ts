@@ -1,3 +1,7 @@
+enum BirdState {
+    Alive,
+    Dead,
+}
 class Bird implements I3DObject {
     private _mesh: THREE.Mesh;
     private _velocity: THREE.Vector3;
@@ -5,6 +9,7 @@ class Bird implements I3DObject {
     private _jumpVelocity: THREE.Vector3;
     private _scene: THREE.Scene;
     private _needsJump: boolean;
+    private _state: BirdState;
 
     constructor(scene: THREE.Scene, initialVelocity: THREE.Vector3, gravity: THREE.Vector3, jumpVelocity: THREE.Vector3) {
         this._mesh = new THREE.Mesh(
@@ -17,14 +22,19 @@ class Bird implements I3DObject {
         this._needsJump = false;
         this._jumpVelocity = jumpVelocity.clone();
         this._scene = scene;
+        this._state = BirdState.Alive;
     }
 
     public get mesh() {
         return this._mesh;
     }
 
+    public get collisionEffect() {
+        return CollisionEffect.None;
+    }
+
     public update(deltaSeconds: number) {
-        if (this._needsJump) {
+        if (this._needsJump && this._state == BirdState.Alive) {
             this._velocity = this._jumpVelocity.clone();
             this._needsJump  = false;
         }
@@ -38,5 +48,16 @@ class Bird implements I3DObject {
 
     public setNeedsJump() {
         this._needsJump = true;
+    }
+
+    public fall() {
+        if (this._state == BirdState.Alive) {
+            this._velocity.set(0, 0, 0);
+            this.die();
+        }
+    }
+
+    public die() {
+        this._state = BirdState.Dead;
     }
 }
