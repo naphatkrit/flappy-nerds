@@ -13,4 +13,6 @@ abstract class Config {
     public static OBSTACLE_BOX_Y_RANGE = (Config.MAX_Y - Config.MIN_Y - Config.OBSTACLE_BOX_SIZE - Config.OBSTACLE_BOX_RANGE) / 2;
 
     public static FIRST_PERSON_DISTANCE = 1000;
+
+    public static SIDE_CAMERA_OFFSET = 200;
 }

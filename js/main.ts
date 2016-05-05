@@ -59,10 +59,10 @@ class Main {
         // counteract different front orientation of cameras vs rig
         this.cameraPerspective.rotation.y = Math.PI;
 
-        this.cameraPerspective.position.x = 0;
+        this.cameraPerspective.position.x = Config.SIDE_CAMERA_OFFSET;
         this.cameraPerspective.position.y = 0;
         this.cameraPerspective.position.z = 1000;
-        this.cameraPerspective.lookAt(new THREE.Vector3(0, 0, -1));
+        this.cameraPerspective.lookAt(new THREE.Vector3(this.cameraPerspective.position.x, this.cameraPerspective.position.y, -1));
 
         this.cameraFirstPerson = new THREE.PerspectiveCamera(50, 0.5 * this.aspect, Config.FIRST_PERSON_DISTANCE - 100, Config.FIRST_PERSON_DISTANCE + 3000);
         // counteract different front orientation of cameras vs rig
