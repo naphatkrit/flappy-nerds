@@ -1,3 +1,8 @@
+@font-face {
+    font-family: ka1;
+    src: url(/fonts/ka1.ttf);
+}
+
 html, body {
     padding: 0;
     margin: 0;
@@ -26,6 +31,7 @@ html, body {
 }
 
 #main-control {
+    font-family: ka1, sans-serif;
     position: absolute;
     top: 2em;
     right: 2em;
@@ -84,6 +90,8 @@ html, body {
 }
 
 #pause-curtain > h1 {
+    font-family: ka1, sans-serif;
+    font-size: 60px;
     margin-top: 50vh;
 }
 
