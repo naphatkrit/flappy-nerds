@@ -22,7 +22,6 @@ class Main {
     private bottomPlane: Plane;
 
     private updater: Updater;
-    private keyHandlers: IKeyHandler[];
     private keyHandlerMap: {[keyCode:number]:IKeyHandler};
     private _initContainer() {
         this.container = $('#container');
@@ -108,7 +107,7 @@ class Main {
     }
 
     private _initKeyHandlers() {
-        this.keyHandlers = [
+        var keyHandlers = [
             {
                 keyCode: 49,
                 keyDisplay: '1',
@@ -177,21 +176,31 @@ class Main {
                     this._togglePause();
                 }
             },
+            {
+                keyCode: 191,
+                keyDisplay: '/',
+                help: 'Toggle this help window.',
+                handler: (event)=>{
+                    $('#help-modal').modal('toggle');
+                }
+            },
         ];
-        this.keyHandlerMap = {};
-        for (var i = 0; i < this.keyHandlers.length; ++i) {
-            this.keyHandlerMap[this.keyHandlers[i].keyCode] = this.keyHandlers[i];
-        }
-
-        for (var i = 0; i < this.keyHandlers.length; ++i) {
+        for (var i = 0; i < keyHandlers.length; ++i) {
             var div = $('<div>').addClass('help-line');
-            var handler = this.keyHandlers[i];
+            var handler = keyHandlers[i];
             var keyDiv = $('<div>').addClass('keys');
             div.append(keyDiv);
             keyDiv.text(handler.keyDisplay);
             div.append(handler.help);
             $('#help-body').append(div);
         }
+        this.keyHandlerMap = {};
+        var updateMap = (handlers)=>{
+            for (var i = 0; i < handlers.length; ++i) {
+                this.keyHandlerMap[handlers[i].keyCode] = handlers[i];
+            }
+        }
+        updateMap(keyHandlers);
     }
 
     constructor() {
