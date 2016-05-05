@@ -4,13 +4,15 @@ class Plane implements I3DObject {
     private _velocity: THREE.Vector3;
     private _collisionEffect: CollisionEffect;
     private _texture: THREE.Texture;
+    private _size: number;
 
     constructor(scene: THREE.Scene, y: number, velocity: THREE.Vector3, collisionEffect: CollisionEffect) {
         var texture = new THREE.TextureLoader().load( "js/textures/water.jpg" );
         texture.wrapS = THREE.MirroredRepeatWrapping;
         texture.wrapT = THREE.MirroredRepeatWrapping;
+        this._size = window.innerWidth;
         this._mesh = new THREE.Mesh(
-            new THREE.PlaneGeometry(window.innerWidth, window.innerWidth, 1, 1),
+            new THREE.PlaneGeometry(this._size, this._size, 1, 1),
             new THREE.MeshBasicMaterial({ map: texture, wireframe: false})
         );
         this._texture = texture;
@@ -33,7 +35,7 @@ class Plane implements I3DObject {
 
     public update(deltaSeconds: number) {
         this._mesh.position.addScaledVector(this._velocity, deltaSeconds);
-        this._texture.offset.x = (this._texture.offset.x + this._velocity.x * deltaSeconds / this._texture.image.width);
+        this._texture.offset.x = (this._texture.offset.x + this._velocity.x * deltaSeconds / this._size);
     }
 
     public stop() {
