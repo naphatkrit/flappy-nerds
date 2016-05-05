@@ -121,7 +121,12 @@ class Main {
         $('#pause-btn').on('click', ()=>{
             $('#pause-btn').blur();
             this._togglePause();
-        })
+        });
+        $(window).blur(()=>{
+            if (!this.updater.paused) {
+                this._togglePause();
+            }
+        });
     }
 
     private _toggleAutopilot() {
