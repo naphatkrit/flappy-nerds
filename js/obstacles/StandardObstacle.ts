@@ -10,7 +10,9 @@ class StandardObstacle implements IObstacle {
         var texture = new THREE.TextureLoader().load( "js/textures/wood.jpg" );
         var material = new THREE.MeshLambertMaterial(
             {map: texture,
-            side: THREE.DoubleSide}
+            side: THREE.DoubleSide,
+            emissive: 0x331a00,
+            emissiveIntensity: 0.7}
             );
         var topBox = new THREE.BoxGeometry(boundingBox.max.x - boundingBox.min.x, maxY - boundingBox.max.y, boundingBox.max.z - boundingBox.min.z);
         var topMesh = new THREE.Mesh(topBox, material);

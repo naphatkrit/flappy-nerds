@@ -23,7 +23,6 @@ class Main {
     private bottomPlane: Plane;
 
     private updater: Updater;
-    private keyHandlers: IKeyHandler[];
     private keyHandlerMap: {[keyCode:number]:IKeyHandler};
     private _initContainer() {
         this.container = $('#container');
@@ -47,8 +46,6 @@ class Main {
         }
         var particles = new THREE.Points(geometry, new THREE.PointsMaterial({ color: 0x888888 }));
         this.scene.add(particles);
-        var light = new THREE.HemisphereLight( 0xffffbb, 0x080820, 1 );
-        this.scene.add( light );
     }
 
     private _initPlanes() {
@@ -113,79 +110,110 @@ class Main {
     }
 
     private _initKeyHandlers() {
-        this.keyHandlers = [
-            {
-                keyCode: 49,
-                keyDisplay: '1',
-                help: 'Switch left view to side view.',
-                handler: (event)=>{
-                    this.activeCamera = this.cameraPerspective;
-                    if (Config.DEBUG) {
-                        this.activeHelper = this.cameraPerspectiveHelper;
+        var keyHandlers: {[text:string]:IKeyHandler[]} = {
+            'Camera': [
+                {
+                    keyCode: 49,
+                    keyDisplay: '1',
+                    help: 'Switch left view to side view.',
+                    handler: (event)=>{
+                        this.activeCamera = this.cameraPerspective;
+                        if (Config.DEBUG) {
+                            this.activeHelper = this.cameraPerspectiveHelper;
+                        }
                     }
-                }
-            },
-            {
-                keyCode: 50,
-                keyDisplay: '2',
-                help: 'Switch left view to first-person view.',
-                handler: (event)=>{
-                    this.activeCamera = this.cameraFirstPerson;
-                    if (Config.DEBUG) {
-                        this.activeHelper = this.cameraFirstPersonHelper;
+                },
+                {
+                    keyCode: 50,
+                    keyDisplay: '2',
+                    help: 'Switch left view to first-person view.',
+                    handler: (event)=>{
+                        this.activeCamera = this.cameraFirstPerson;
+                        if (Config.DEBUG) {
+                            this.activeHelper = this.cameraFirstPersonHelper;
+                        }
                     }
-                }
-            },
-            {
-                keyCode: 81,
-                keyDisplay: 'q',
-                help: 'Switch right view to side view.',
-                handler: (event)=>{
-                    this.activeCamera2 = this.cameraPerspective;
-                    if (Config.DEBUG) {
-                        this.activeHelper2 = this.cameraPerspectiveHelper;
+                },
+                {
+                    keyCode: 81,
+                    keyDisplay: 'q',
+                    help: 'Switch right view to side view.',
+                    handler: (event)=>{
+                        this.activeCamera2 = this.cameraPerspective;
+                        if (Config.DEBUG) {
+                            this.activeHelper2 = this.cameraPerspectiveHelper;
+                        }
                     }
-                }
-            },
-            {
-                keyCode: 87,
-                keyDisplay: 'w',
-                help: 'Switch right view to first-person view.',
-                handler: (event)=>{
-                    this.activeCamera2 = this.cameraFirstPerson;
-                    if (Config.DEBUG) {
-                        this.activeHelper2 = this.cameraFirstPersonHelper;
+                },
+                {
+                    keyCode: 87,
+                    keyDisplay: 'w',
+                    help: 'Switch right view to first-person view.',
+                    handler: (event)=>{
+                        this.activeCamera2 = this.cameraFirstPerson;
+                        if (Config.DEBUG) {
+                            this.activeHelper2 = this.cameraFirstPersonHelper;
+                        }
                     }
-                }
-            },
-            {
-                keyCode: 32,
-                keyDisplay: '<SPC>',
-                help: 'Jump.',
-                handler: (event)=>{
-                    this.bird.setNeedsJump();
-                }
-            },
-            {
-                keyCode: 65,
-                keyDisplay: 'a',
-                help: 'Toggle autopilot mode.',
-                handler: (event)=>{
-                    this._toggleAutopilot();
-                }
-            },
-            {
-                keyCode: 80,
-                keyDisplay: 'p',
-                help: 'Pause/unpause.',
-                handler: (event)=>{
-                    this._togglePause();
-                }
-            },
-        ];
+                },
+            ],
+            'Game Control': [
+                {
+                    keyCode: 32,
+                    keyDisplay: '<SPC>',
+                    help: 'Jump.',
+                    handler: (event)=>{
+                        this.bird.setNeedsJump();
+                    }
+                },
+                {
+                    keyCode: 65,
+                    keyDisplay: 'a',
+                    help: 'Toggle autopilot mode.',
+                    handler: (event)=>{
+                        this._toggleAutopilot();
+                    }
+                },
+                {
+                    keyCode: 80,
+                    keyDisplay: 'p',
+                    help: 'Pause/unpause.',
+                    handler: (event)=>{
+                        this._togglePause();
+                    }
+                },
+            ],
+            'Others': [
+                {
+                    keyCode: 191,
+                    keyDisplay: '/',
+                    help: 'Toggle this help window.',
+                    handler: (event)=>{
+                        $('#help-modal').modal('toggle');
+                    }
+                },
+            ]
+        }
+        for (var title in keyHandlers) {
+            var handlers = keyHandlers[title];
+            $('#help-body').append($('<h4>').text(title));
+            for (var i = 0; i < handlers.length; ++i) {
+                var div = $('<div>').addClass('help-line');
+                var handler = handlers[i];
+                var keyDiv = $('<div>').addClass('keys');
+                div.append(keyDiv);
+                keyDiv.text(handler.keyDisplay);
+                div.append(handler.help);
+                $('#help-body').append(div);
+            }
+            $('#help-body').append($('<br>'));
+        }
         this.keyHandlerMap = {};
-        for (var i = 0; i < this.keyHandlers.length; ++i) {
-            this.keyHandlerMap[this.keyHandlers[i].keyCode] = this.keyHandlers[i];
+        for (var title in keyHandlers) {
+            var handlers = keyHandlers[title];
+            for (var i = 0; i < handlers.length; ++i) {
+                this.keyHandlerMap[handlers[i].keyCode] = handlers[i];
+            }
         }
     }
 
@@ -211,6 +239,14 @@ class Main {
             $('#pause-btn').blur();
             this._togglePause();
         });
+        $('#help-btn').on('focus', ()=> {
+            $('#help-btn').blur();
+        });
+        $('#help-modal').on('show.bs.modal', ()=>{
+            if (!this.updater.paused) {
+                this._togglePause();
+            }
+        })
         $(window).blur(()=>{
             if (!this.updater.paused) {
                 this._togglePause();
@@ -224,8 +260,9 @@ class Main {
     }
 
     private _togglePause() {
-        $('#pause-btn').toggleClass('btn-default btn-primary');
         this.updater.paused = !this.updater.paused;
+        $('#pause-btn').toggleClass('btn-default btn-primary');
+        $('#pause-curtain').toggleClass('in');
     }
 
     private onKeyDown(event) {
