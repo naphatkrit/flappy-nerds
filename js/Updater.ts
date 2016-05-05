@@ -44,6 +44,13 @@ class Updater {
     }
 
     public update() {
+        // it looks like every time we pause, we lose about 0.2 seconds worth of time
+        // this is large enough to matter in animation, but too small to matter
+        // in obstacles generation
+        var currTime = this._watch.ms;
+        var deltaSeconds = (currTime - this._prevTime) / 1000;
+        this._prevTime = currTime;
+
         if (this.paused) {
             return;
         }
@@ -51,10 +58,6 @@ class Updater {
         if (this._bird.mesh == null) {
             return;
         }
-
-        var currTime = this._watch.ms;
-        var deltaSeconds = (currTime - this._prevTime) / 1000;
-        this._prevTime = currTime;
 
         this._generateObstacles();
         this._cleanObstacles();
