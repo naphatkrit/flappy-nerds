@@ -44,7 +44,7 @@ class Stopwatch {
 
     	//// options
     	if(!options) {options = {};}
-    	this.refreshRateMS = options.refreshRateMS || 50;
+    	this.refreshRateMS = options.refreshRateMS || 10; // must be a number smaller than 16 (1000ms/60 fps)
     	this.almostDoneMS = options.almostDoneMS || 10000;
 
 
