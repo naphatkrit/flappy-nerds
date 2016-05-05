@@ -33,6 +33,33 @@ body {
     position: absolute;
 }
 
+#main-control {
+    position: absolute;
+    top: 2em;
+    right: 2em;
+    z-index: 1000;
+}
+
+#score {
+    color: black;
+    background-color: white;
+    border-color: #2e6da4;
+
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 20px; /* 14px*/
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
 .top {
     margin: 30px;
 }

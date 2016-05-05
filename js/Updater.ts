@@ -8,6 +8,8 @@ class Updater {
     private _scene: THREE.Scene;
 
     private _rand: lfsr;
+    private _prevVisibleObstacle: IObstacle = null;
+    private _score: number = 0;
 
     constructor(scene: THREE.Scene, bird: Bird, cameraRig: THREE.Group, topPlane: Plane, bottomPlane: Plane) {
         this._rand = new lfsr(Config.RAND_SEED);
@@ -57,12 +59,15 @@ class Updater {
         var currTime = Date.now();
         var deltaSeconds = (currTime - this._prevTime) / 1000;
 
-        if (this._nextVisibleOstacle() != null) {
-            var controlTarget = this._nextVisibleOstacle().safeBox
+        var obstacle = this._nextVisibleOstacle();
+        if (this._prevVisibleObstacle !== obstacle) {
+            if (this._prevVisibleObstacle !== null) {
+                this._score++;
+                $('#score').text(this._score);
+            }
+            this._prevVisibleObstacle = obstacle;
         }
-        else {
-            controlTarget = null
-        }
+        var controlTarget = obstacle === null ? null : obstacle.safeBox;
         autopilot.control(this._bird, controlTarget)
         this._prevTime = currTime;
         this._topPlane.update(deltaSeconds);
