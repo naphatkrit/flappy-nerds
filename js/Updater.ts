@@ -11,12 +11,29 @@ class Updater {
     private _prevVisibleObstacle: IObstacle = null;
     private _score: number = 0;
 
+    private _watch: Stopwatch;
+
     public autopilotEnabled = true;
-    public paused = false;
+    private _paused = false;
+
+    public get paused() {
+        return this._paused;
+    }
+
+    public set paused(newValue: boolean) {
+        this._paused = newValue;
+        if (this._paused) {
+            this._watch.stop();
+        } else {
+            this._watch.start();
+        }
+    }
 
     constructor(scene: THREE.Scene, bird: Bird, cameraRig: THREE.Group, topPlane: Plane, bottomPlane: Plane) {
+        this._watch = new Stopwatch();
+        this._watch.start();
         this._rand = new lfsr(Config.RAND_SEED);
-        this._prevTime = Date.now();
+        this._prevTime = this._watch.ms;
         this._nextObstacleTime = this._prevTime + this.obstacleInterval;
         this._bird = bird;
         this._cameraRig = cameraRig;
@@ -27,15 +44,18 @@ class Updater {
     }
 
     public update() {
-        var currTime = Date.now();
-        var deltaSeconds = (currTime - this._prevTime) / 1000;
-        this._prevTime = currTime;
         if (this.paused) {
             return;
         }
+
         if (this._bird.mesh == null) {
             return;
         }
+
+        var currTime = this._watch.ms;
+        var deltaSeconds = (currTime - this._prevTime) / 1000;
+        this._prevTime = currTime;
+
         this._generateObstacles();
         this._cleanObstacles();
 
