@@ -52,16 +52,16 @@ class Bird implements I3DObject {
             }
         );
 
-        this._light_left = new THREE.PointLight( 0xffffee, 0.3, 1000, 3 );
-		this._light_left.position.set( -50, 0, 0 );
+        this._light_left = new THREE.PointLight( 0xffffee, 0.8, 2000, 2 );
+		this._light_left.position.set( -50, 50, 0 );
         this._light_left.castShadow = true;
-        this._light_right = new THREE.PointLight( 0xffffee, 0.3, 1000, 3 );
-		this._light_right.position.set( 50, 0, 0 );
+        this._light_right = new THREE.PointLight( 0xffffee, 0.8, 2000, 2 );
+		this._light_right.position.set( 50, -50, 0 );
         this._light_right.castShadow = true;
-        this._light_front = new THREE.PointLight( 0xffffee, 1.2, 2000, 1 );
+        this._light_front = new THREE.PointLight( 0xffffee, 1, 1000, 2 );
 		this._light_front.position.set( 0, 0, 300 );
         this._light_front.castShadow = true;
-        this._light_back = new THREE.PointLight( 0xffffee, 1.2, 2000, 1 );
+        this._light_back = new THREE.PointLight( 0xffffee, 1, 1000, 2 );
 		this._light_back.position.set( 0, 0, -300 );
         this._light_back.castShadow = true;
 		scene.add( this._light_left );
@@ -110,10 +110,12 @@ class Bird implements I3DObject {
         this._velocity.addScaledVector(this._gravity, deltaSeconds);
         this._mesh.position.addScaledVector(this._velocity, deltaSeconds);
 
-        this._light_left.position.addScaledVector(this._velocity, deltaSeconds);
-        this._light_right.position.addScaledVector(this._velocity, deltaSeconds);
-        this._light_front.position.addScaledVector(this._velocity, deltaSeconds);
-        this._light_back.position.addScaledVector(this._velocity, deltaSeconds);
+        var temp_velocity = new THREE.Vector3(this._velocity.x, this._velocity.y / 3, this._velocity.z);
+
+        this._light_left.position.addScaledVector(temp_velocity, deltaSeconds);
+        this._light_right.position.addScaledVector(temp_velocity, deltaSeconds);
+        this._light_front.position.addScaledVector(temp_velocity, deltaSeconds);
+        this._light_back.position.addScaledVector(temp_velocity, deltaSeconds);
     }
 
     public removeFromScene() {
