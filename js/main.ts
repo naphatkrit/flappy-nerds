@@ -113,6 +113,15 @@ class Main {
         this._initStats();
         window.addEventListener('resize', (event) => { this.onWindowResize(event) }, false);
         document.addEventListener('keydown', (event) => { this.onKeyDown(event) }, false);
+
+        $('#autopilot-btn').on('click', ()=> {
+            $('#autopilot-btn').blur();
+        })
+    }
+
+    private _toggleAutopilot() {
+        $('#autopilot-btn').toggleClass('btn-default btn-primary');
+        this.updater.autopilotEnabled = !this.updater.autopilotEnabled;
     }
 
     private onKeyDown(event) {
@@ -128,6 +137,9 @@ class Main {
                 if (Config.DEBUG) {
                     this.activeHelper = this.cameraFirstPersonHelper;
                 }
+                break;
+            case 65: /*a*/
+                this._toggleAutopilot();
                 break;
             case 81: /*q*/
                 this.activeCamera2 = this.cameraPerspective;
