@@ -3,4 +3,5 @@ interface IObstacle {
     objects: I3DObject[];
     update(deltaSeconds: number): void;
     safeBox: THREE.Box3;
+    removeFromScene(): void;
 }

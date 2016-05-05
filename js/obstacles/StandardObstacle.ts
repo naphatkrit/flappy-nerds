@@ -3,6 +3,7 @@ class StandardObstacle implements IObstacle {
     private _topObject: I3DObject;
     private _bottomObject: I3DObject;
     private _safeBox: THREE.Box3;
+    private _scene: THREE.Scene;
 
     constructor(scene: THREE.Scene, boundingBox: THREE.Box3, minY: number, maxY: number) {
         //var material = new THREE.MeshBasicMaterial({ color: 0x0000ff, wireframe: false});
@@ -30,6 +31,7 @@ class StandardObstacle implements IObstacle {
         this._topObject = new MeshObject(topMesh, CollisionEffect.Fall);
         this._bottomObject = new MeshObject(bottomMesh, CollisionEffect.Stop);
         this._safeBox = boundingBox;
+        this._scene = scene;
     }
 
     public get objects() {
@@ -45,5 +47,10 @@ class StandardObstacle implements IObstacle {
     }
 
     public update(deltaSeconds: number) {
+    }
+
+    public removeFromScene() {
+        this._scene.remove(this._topObject.mesh);
+        this._scene.remove(this._bottomObject.mesh);
     }
 }

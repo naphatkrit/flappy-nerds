@@ -135,7 +135,8 @@ class Updater {
     private _cleanObstacles() {
         var minXPos = this._bird.mesh.position.x - window.innerWidth/2;
         while (this._obstacles.length > 0 && this._obstacles[0].safeBox.max.x < minXPos) {
-            this._obstacles.shift();
+            var obstacle = this._obstacles.shift();
+            obstacle.removeFromScene();
         }
     }
 }
