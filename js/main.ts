@@ -7,6 +7,7 @@ class Main {
     private scene: THREE.Scene
     private renderer: THREE.WebGLRenderer;
     private bird: Bird;
+    private ufo: Ufo;
     private cameraRig: THREE.Group;
     private activeCamera: THREE.Camera;
     private activeCamera2: THREE.Camera;
@@ -98,8 +99,12 @@ class Main {
         this.bird = new Bird(this.scene, Config.VELOCITY, Config.GRAVITY, Config.JUMP_VELOCITY);
     }
 
+    private _initUfo() {
+        this.ufo = new Ufo(this.scene, this.bird, Config.VELOCITY, (new THREE.Vector3(-500, 0, 0)));
+    }
+
     private _initUpdater() {
-        this.updater = new Updater(this.scene, this.bird, this.cameraRig, this.topPlane, this.bottomPlane);
+        this.updater = new Updater(this.scene, this.bird, this.ufo, this.cameraRig, this.topPlane, this.bottomPlane);
     }
 
     private _initStats() {
@@ -188,6 +193,7 @@ class Main {
         this._initContainer();
         this._initScene();
         this._initBird();
+        this._initUfo();
         this._initCameras();
         this._initPlanes();
         this._initUpdater();

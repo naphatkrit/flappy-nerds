@@ -1,6 +1,7 @@
 class Updater {
     private _prevTime: number;
     private _bird: Bird;
+    private _ufo: Ufo;
     private _cameraRig: THREE.Group;
     private _topPlane: Plane;
     private _bottomPlane: Plane;
@@ -29,13 +30,14 @@ class Updater {
         }
     }
 
-    constructor(scene: THREE.Scene, bird: Bird, cameraRig: THREE.Group, topPlane: Plane, bottomPlane: Plane) {
+    constructor(scene: THREE.Scene, bird: Bird, ufo: Ufo, cameraRig: THREE.Group, topPlane: Plane, bottomPlane: Plane) {
         this._watch = new Stopwatch();
         this._watch.start();
         this._rand = new lfsr(Config.RAND_SEED);
         this._prevTime = this._watch.ms;
         this._nextObstacleTime = this._prevTime + this.obstacleInterval;
         this._bird = bird;
+        this._ufo = ufo;
         this._cameraRig = cameraRig;
         this._topPlane = topPlane;
         this._bottomPlane = bottomPlane;
@@ -99,6 +101,7 @@ class Updater {
         this._topPlane.update(deltaSeconds);
         this._bottomPlane.update(deltaSeconds);
         this._bird.update(deltaSeconds);
+        this._ufo.update(deltaSeconds);
         this._cameraRig.position.x = this._bird.mesh.position.x;
     }
 
