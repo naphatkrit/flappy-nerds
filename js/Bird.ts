@@ -19,12 +19,21 @@ class Bird implements I3DObject {
     constructor(scene: THREE.Scene, initialVelocity: THREE.Vector3, gravity: THREE.Vector3, jumpVelocity: THREE.Vector3) {
         var jsonLoader = new THREE.JSONLoader();
         jsonLoader.load('animated_models/humming_bird.js',
-        	( geometry, mat ) => {
-                //var material = new THREE.MeshFaceMaterial( mat );
-                var material = new THREE.TextureLoader().load( "js/textures/bird.jpg" );
+        	( geometry ) => {
+                //var material = new THREE.TextureLoader().load( "js/textures/bird.jpg" );
+                geometry.computeVertexNormals();
+				geometry.computeMorphNormals();
+				var material = new THREE.MeshPhongMaterial( {
+					color: 0xffffff,
+					morphTargets: true,
+					morphNormals: true,
+					vertexColors: THREE.FaceColors,
+					shading: THREE.SmoothShading
+				} );
         		this._mesh = new THREE.Mesh(
                     geometry,
-                    new THREE.MeshBasicMaterial({ color: 0xffffff, map: material, wireframe: true, morphTargets: true })
+                    material
+                    //new THREE.MeshBasicMaterial({ color: 0xffffff, map: material, wireframe: true, morphTargets: true })
                 );
                 this._mesh.position.x = 0;
                 this._mesh.position.y = 0;
@@ -80,6 +89,7 @@ class Bird implements I3DObject {
 
         this._velocity.addScaledVector(this._gravity, deltaSeconds);
         this._mesh.position.addScaledVector(this._velocity, deltaSeconds);
+
     }
 
     public removeFromScene() {
