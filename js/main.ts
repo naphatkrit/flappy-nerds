@@ -45,8 +45,6 @@ class Main {
         }
         var particles = new THREE.Points(geometry, new THREE.PointsMaterial({ color: 0x888888 }));
         this.scene.add(particles);
-        var light = new THREE.HemisphereLight( 0xffffbb, 0x080820, 1 );
-        this.scene.add( light );
     }
 
     private _initPlanes() {
