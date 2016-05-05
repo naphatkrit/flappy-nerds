@@ -255,6 +255,7 @@ class Main {
 
     private _togglePause() {
         $('#pause-btn').toggleClass('btn-default btn-primary');
+        $('#pause-curtain').toggleClass('in');
         this.updater.paused = !this.updater.paused;
     }
 

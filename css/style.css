@@ -18,14 +18,6 @@ html, body {
     user-select: text;
 }
 
-body {
-    font-family:"Lucida Sans Unicode", "Lucida Grande", sans-serif;
-    font-size: 20px;
-    color: #eee;
-    background: #222;
-    margin: 0;
-}
-
 #main_div {
     margin: 0 auto;
     max-width: 55em;
@@ -37,7 +29,7 @@ body {
     position: absolute;
     top: 2em;
     right: 2em;
-    z-index: 1000;
+    z-index: 1040;
 }
 
 #score {
@@ -74,6 +66,29 @@ body {
 
 .help-line {
     margin-bottom: 10px;
+}
+
+.curtain {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    z-index: 1020; /* modal is 1050 */
+}
+
+#pause-curtain {
+    text-align: center;
+}
+
+#pause-curtain > h1 {
+    margin-top: 50vh;
+}
+
+.curtain:not(.in) {
+    pointer-events:none;
 }
 
 .top {
@@ -125,29 +140,6 @@ img {
     margin: 0 auto;
     text-align: center;
     font-color:#FF0;
-}
-
-h1, h2, h3 {
-    font-weight: 700;
-    margin: 0em 0em 0em;
-    letter-spacing: 2px;
-    opacity: 0.5;
-    text-shadow:
-       -1px -1px 1px #000,
-        1px -1px 1px #000,
-        -1px 1px 1px #000,
-         1px 1px 1px #000;
-}
-
-h1 {
-    font-size: 100%;
-}
-h2 {
-    margin-top:10px;
-    font-size: 70%;
-}
-h3 {
-    font-size: 60%;
 }
 
 a, a:visited, a:active {
