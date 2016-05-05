@@ -8,7 +8,7 @@ class StandardObstacle implements IObstacle {
     constructor(scene: THREE.Scene, boundingBox: THREE.Box3, minY: number, maxY: number) {
         //var material = new THREE.MeshBasicMaterial({ color: 0x0000ff, wireframe: false});
         var texture = new THREE.TextureLoader().load( "js/textures/wood.jpg" );
-        var material = new THREE.MeshBasicMaterial(
+        var material = new THREE.MeshLambertMaterial(
             {map: texture,
             side: THREE.DoubleSide}
             );

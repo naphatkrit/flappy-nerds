@@ -12,6 +12,10 @@ class Bird implements I3DObject {
     private _state: BirdState;
     private _height: number;
     private _mixer: THREE.AnimationMixer;
+    private _light_left: THREE.PointLight;
+    private _light_right: THREE.PointLight;
+    private _light_front: THREE.PointLight;
+    private _light_back: THREE.PointLight;
 
     private _counter: number = 0;
     private _needmix: boolean = false;
@@ -33,7 +37,6 @@ class Bird implements I3DObject {
         		this._mesh = new THREE.Mesh(
                     geometry,
                     material
-                    //new THREE.MeshBasicMaterial({ color: 0xffffff, map: material, wireframe: true, morphTargets: true })
                 );
                 this._mesh.position.x = 0;
                 this._mesh.position.y = 0;
@@ -48,6 +51,23 @@ class Bird implements I3DObject {
                 this._mixer.clipAction(clip).setDuration(1).play();
             }
         );
+
+        this._light_left = new THREE.PointLight( 0xffffee, 0.3, 1000, 3 );
+		this._light_left.position.set( -50, 0, 0 );
+        this._light_left.castShadow = true;
+        this._light_right = new THREE.PointLight( 0xffffee, 0.3, 1000, 3 );
+		this._light_right.position.set( 50, 0, 0 );
+        this._light_right.castShadow = true;
+        this._light_front = new THREE.PointLight( 0xffffee, 1.2, 2000, 1 );
+		this._light_front.position.set( 0, 0, 300 );
+        this._light_front.castShadow = true;
+        this._light_back = new THREE.PointLight( 0xffffee, 1.2, 2000, 1 );
+		this._light_back.position.set( 0, 0, -300 );
+        this._light_back.castShadow = true;
+		scene.add( this._light_left );
+        scene.add( this._light_right );
+        scene.add( this._light_front );
+        scene.add( this._light_back );
 
         this._velocity = initialVelocity.clone();
         this._gravity = gravity.clone();
@@ -90,10 +110,18 @@ class Bird implements I3DObject {
         this._velocity.addScaledVector(this._gravity, deltaSeconds);
         this._mesh.position.addScaledVector(this._velocity, deltaSeconds);
 
+        this._light_left.position.addScaledVector(this._velocity, deltaSeconds);
+        this._light_right.position.addScaledVector(this._velocity, deltaSeconds);
+        this._light_front.position.addScaledVector(this._velocity, deltaSeconds);
+        this._light_back.position.addScaledVector(this._velocity, deltaSeconds);
     }
 
     public removeFromScene() {
         this._scene.remove(this._mesh);
+        this._scene.remove(this._light_left);
+        this._scene.remove(this._light_right);
+        this._scene.remove(this._light_front);
+        this._scene.remove(this._light_back);
     }
 
     public setNeedsJump() {

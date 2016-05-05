@@ -13,7 +13,7 @@ class Plane implements I3DObject {
         this._size = window.innerWidth;
         this._mesh = new THREE.Mesh(
             new THREE.PlaneGeometry(this._size, this._size, 1, 1),
-            new THREE.MeshBasicMaterial({ map: texture, wireframe: false})
+            new THREE.MeshPhongMaterial({ map: texture, wireframe: false})
         );
         this._texture = texture;
         this._mesh.translateY(y);
