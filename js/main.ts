@@ -117,12 +117,21 @@ class Main {
         $('#autopilot-btn').on('click', ()=> {
             $('#autopilot-btn').blur();
             this._toggleAutopilot();
+        });
+        $('#pause-btn').on('click', ()=>{
+            $('#pause-btn').blur();
+            this._togglePause();
         })
     }
 
     private _toggleAutopilot() {
         $('#autopilot-btn').toggleClass('btn-default btn-primary');
         this.updater.autopilotEnabled = !this.updater.autopilotEnabled;
+    }
+
+    private _togglePause() {
+        $('#pause-btn').toggleClass('btn-default btn-primary');
+        this.updater.paused = !this.updater.paused;
     }
 
     private onKeyDown(event) {
@@ -141,6 +150,9 @@ class Main {
                 break;
             case 65: /*a*/
                 this._toggleAutopilot();
+                break;
+            case 80: /*p*/
+                this._togglePause();
                 break;
             case 81: /*q*/
                 this.activeCamera2 = this.cameraPerspective;

@@ -12,6 +12,7 @@ class Updater {
     private _score: number = 0;
 
     public autopilotEnabled = true;
+    public paused = false;
 
     constructor(scene: THREE.Scene, bird: Bird, cameraRig: THREE.Group, topPlane: Plane, bottomPlane: Plane) {
         this._rand = new lfsr(Config.RAND_SEED);
@@ -26,6 +27,12 @@ class Updater {
     }
 
     public update() {
+        var currTime = Date.now();
+        var deltaSeconds = (currTime - this._prevTime) / 1000;
+        this._prevTime = currTime;
+        if (this.paused) {
+            return;
+        }
         if (this._bird.mesh == null) {
             return;
         }
@@ -37,7 +44,6 @@ class Updater {
             obstacleObjects = obstacleObjects.concat(this._obstacles[i].objects);
         }
         obstacleObjects.push(this._topPlane, this._bottomPlane);
-
 
         var collision = Collision.collide(this._bird, obstacleObjects);
 
@@ -58,9 +64,6 @@ class Updater {
             }
         }
 
-        var currTime = Date.now();
-        var deltaSeconds = (currTime - this._prevTime) / 1000;
-
         var obstacle = this._nextVisibleOstacle();
         if (this._prevVisibleObstacle !== obstacle) {
             if (this._prevVisibleObstacle !== null) {
@@ -73,7 +76,6 @@ class Updater {
             var controlTarget = obstacle === null ? null : obstacle.safeBox;
             autopilot.control(this._bird, controlTarget)
         }
-        this._prevTime = currTime;
         this._topPlane.update(deltaSeconds);
         this._bottomPlane.update(deltaSeconds);
         this._bird.update(deltaSeconds);
