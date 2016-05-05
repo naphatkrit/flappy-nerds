@@ -1,5 +1,5 @@
 GEM
-  remote: http://rubygems.org/
+  remote: https://rubygems.org/
   specs:
     rack (1.4.1)
 
@@ -8,3 +8,6 @@ PLATFORMS
 
 DEPENDENCIES
   rack
+
+BUNDLED WITH
+   1.12.2
