@@ -60,6 +60,22 @@ body {
     border-radius: 4px;
 }
 
+.keys {
+    color: #3e4a55;
+    margin: 0 3px;
+    border: 1px solid #cbd0d4;
+    background-color: #fff;
+    padding: 5px 2px 1px;
+    border-radius: 3px;
+    box-shadow: 0 1px 0 #cbd0d4;
+    display: inline-block;
+    line-height: 13px;
+}
+
+.help-line {
+    margin-bottom: 10px;
+}
+
 .top {
     margin: 30px;
 }

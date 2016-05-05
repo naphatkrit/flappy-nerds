@@ -182,6 +182,16 @@ class Main {
         for (var i = 0; i < this.keyHandlers.length; ++i) {
             this.keyHandlerMap[this.keyHandlers[i].keyCode] = this.keyHandlers[i];
         }
+
+        for (var i = 0; i < this.keyHandlers.length; ++i) {
+            var div = $('<div>').addClass('help-line');
+            var handler = this.keyHandlers[i];
+            var keyDiv = $('<div>').addClass('keys');
+            div.append(keyDiv);
+            keyDiv.text(handler.keyDisplay);
+            div.append(handler.help);
+            $('#help-body').append(div);
+        }
     }
 
     constructor() {
@@ -205,6 +215,14 @@ class Main {
             $('#pause-btn').blur();
             this._togglePause();
         });
+        $('#help-btn').on('focus', ()=> {
+            $('#help-btn').blur();
+        });
+        $('#help-modal').on('show.bs.modal', ()=>{
+            if (!this.updater.paused) {
+                this._togglePause();
+            }
+        })
         $(window).blur(()=>{
             if (!this.updater.paused) {
                 this._togglePause();

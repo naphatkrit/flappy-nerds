@@ -12,6 +12,22 @@
         <div id="score">0</div>
         <button id="autopilot-btn" type="button" class="btn btn-primary"><u>A</u>utopilot</button>
         <button id="pause-btn" type="button" class="btn btn-default"><u>P</u>ause</button>
+        <button id="help-btn" type="button" class="btn btn-default" data-toggle="modal" data-target="#help-modal">?</button>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="help-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Keyboard Commands</h4>
+          </div>
+          <div id="help-body" class="modal-body">
+          </div>
+          <div class="modal-footer">
+          </div>
+        </div>
+      </div>
     </div>
     <div id='container'></div>
     <!-- Core THREE.js -->
@@ -20,6 +36,7 @@
     <script src="/bower_components/three.js/build/three.js"></script>
     <script src="/bower_components/stats.js/build/stats.min.js"></script>
     <script src="/bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <!-- <script src="libjs/TrackballControls.js"></script> -->
 
     <script id="vertexShader" type="x-shader/x-vertex">
