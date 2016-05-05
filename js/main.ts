@@ -22,6 +22,8 @@ class Main {
     private bottomPlane: Plane;
 
     private updater: Updater;
+    private keyHandlers: IKeyHandler[];
+    private keyHandlerMap: {[keyCode:number]:IKeyHandler};
     private _initContainer() {
         this.container = $('#container');
         this.renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -103,6 +105,83 @@ class Main {
         this.container.append($(this.stats.dom));
     }
 
+    private _initKeyHandlers() {
+        this.keyHandlers = [
+            {
+                keyCode: 49,
+                keyDisplay: '1',
+                help: 'Switch left view to side view.',
+                handler: (event)=>{
+                    this.activeCamera = this.cameraPerspective;
+                    if (Config.DEBUG) {
+                        this.activeHelper = this.cameraPerspectiveHelper;
+                    }
+                }
+            },
+            {
+                keyCode: 50,
+                keyDisplay: '2',
+                help: 'Switch left view to first-person view.',
+                handler: (event)=>{
+                    this.activeCamera = this.cameraFirstPerson;
+                    if (Config.DEBUG) {
+                        this.activeHelper = this.cameraFirstPersonHelper;
+                    }
+                }
+            },
+            {
+                keyCode: 81,
+                keyDisplay: 'q',
+                help: 'Switch right view to side view.',
+                handler: (event)=>{
+                    this.activeCamera2 = this.cameraPerspective;
+                    if (Config.DEBUG) {
+                        this.activeHelper2 = this.cameraPerspectiveHelper;
+                    }
+                }
+            },
+            {
+                keyCode: 87,
+                keyDisplay: 'w',
+                help: 'Switch right view to first-person view.',
+                handler: (event)=>{
+                    this.activeCamera2 = this.cameraFirstPerson;
+                    if (Config.DEBUG) {
+                        this.activeHelper2 = this.cameraFirstPersonHelper;
+                    }
+                }
+            },
+            {
+                keyCode: 32,
+                keyDisplay: '<SPC>',
+                help: 'Jump.',
+                handler: (event)=>{
+                    this.bird.setNeedsJump();
+                }
+            },
+            {
+                keyCode: 65,
+                keyDisplay: 'a',
+                help: 'Toggle autopilot mode.',
+                handler: (event)=>{
+                    this._toggleAutopilot();
+                }
+            },
+            {
+                keyCode: 80,
+                keyDisplay: 'p',
+                help: 'Pause/unpause.',
+                handler: (event)=>{
+                    this._togglePause();
+                }
+            },
+        ];
+        this.keyHandlerMap = {};
+        for (var i = 0; i < this.keyHandlers.length; ++i) {
+            this.keyHandlerMap[this.keyHandlers[i].keyCode] = this.keyHandlers[i];
+        }
+    }
+
     constructor() {
         this._initContainer();
         this._initScene();
@@ -111,6 +190,8 @@ class Main {
         this._initPlanes();
         this._initUpdater();
         this._initStats();
+        this._initKeyHandlers();
+
         window.addEventListener('resize', (event) => { this.onWindowResize(event) }, false);
         document.addEventListener('keydown', (event) => { this.onKeyDown(event) }, false);
 
@@ -140,43 +221,9 @@ class Main {
     }
 
     private onKeyDown(event) {
-        switch (event.keyCode) {
-            case 49: /*1*/
-                this.activeCamera = this.cameraPerspective;
-                if (Config.DEBUG) {
-                    this.activeHelper = this.cameraPerspectiveHelper;
-                }
-                break;
-            case 50: /*2*/
-                this.activeCamera = this.cameraFirstPerson;
-                if (Config.DEBUG) {
-                    this.activeHelper = this.cameraFirstPersonHelper;
-                }
-                break;
-            case 65: /*a*/
-                this._toggleAutopilot();
-                break;
-            case 80: /*p*/
-                this._togglePause();
-                break;
-            case 81: /*q*/
-                this.activeCamera2 = this.cameraPerspective;
-                if (Config.DEBUG) {
-                    this.activeHelper2 = this.cameraPerspectiveHelper;
-                }
-                break;
-            case 87: /*w*/
-                this.activeCamera2 = this.cameraFirstPerson;
-                if (Config.DEBUG) {
-                    this.activeHelper2 = this.cameraFirstPersonHelper;
-                }
-                break;
-            case 32: /* spacebar */
-                /* put something here*/
-                // this.bird.update(10);
-                this.bird.setNeedsJump();
-                break;
-
+        var keyHandler = this.keyHandlerMap[event.keyCode];
+        if (keyHandler !== undefined) {
+            keyHandler.handler(event);
         }
     }
 
