@@ -2,7 +2,7 @@ class Main {
     private SCREEN_WIDTH = window.innerWidth;
     private SCREEN_HEIGHT = window.innerHeight;
     private aspect = window.innerWidth / window.innerHeight;
-    private container: HTMLDivElement;
+    private container: JQuery;
     private stats;
     private scene: THREE.Scene
     private renderer: THREE.WebGLRenderer;
@@ -23,13 +23,12 @@ class Main {
 
     private updater: Updater;
     private _initContainer() {
-        this.container = document.createElement('div');
-        document.body.appendChild(this.container);
+        this.container = $('#container');
         this.renderer = new THREE.WebGLRenderer({ antialias: true });
         this.renderer.setPixelRatio(window.devicePixelRatio);
         this.renderer.setSize(this.SCREEN_WIDTH, this.SCREEN_HEIGHT);
         this.renderer.domElement.style.position = "relative";
-        this.container.appendChild(this.renderer.domElement);
+        this.container.append($(this.renderer.domElement));
         this.renderer.autoClear = false;
     }
 
@@ -101,7 +100,7 @@ class Main {
 
     private _initStats() {
         this.stats = new Stats();
-        this.container.appendChild(this.stats.dom);
+        this.container.append($(this.stats.dom));
     }
 
     constructor() {
