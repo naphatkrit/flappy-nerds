@@ -116,6 +116,7 @@ class Main {
 
         $('#autopilot-btn').on('click', ()=> {
             $('#autopilot-btn').blur();
+            this._toggleAutopilot();
         })
     }
 
