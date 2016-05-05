@@ -26,6 +26,7 @@ class Updater {
             return;
         }
         this._generateObstacles();
+        this._cleanObstacles();
 
         var obstacleObjects = new Array<I3DObject>();
         for (var i = 0; i < this._obstacles.length; ++i) {
@@ -98,5 +99,12 @@ class Updater {
             }
         }
         return null;
+    }
+
+    private _cleanObstacles() {
+        var minXPos = this._bird.mesh.position.x - window.innerWidth/2;
+        while (this._obstacles.length > 0 && this._obstacles[0].safeBox.max.x < minXPos) {
+            this._obstacles.shift();
+        }
     }
 }
