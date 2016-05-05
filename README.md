@@ -1,4 +1,5 @@
 # flappy-nerds
+This project is hosted at http://flappy-nerds.herokuapp.com.
 
 ## Development
 ### Prerequisites
