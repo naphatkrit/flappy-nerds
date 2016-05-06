@@ -2,6 +2,7 @@ class Plane implements I3DObject {
 
     private _mesh: THREE.Mesh;
     private _velocity: THREE.Vector3;
+    private _initialVelocity: THREE.Vector3;
     private _collisionEffect: CollisionEffect;
     private _texture: THREE.Texture;
     private _size: number;
@@ -20,9 +21,10 @@ class Plane implements I3DObject {
         this._mesh.rotateX((y > 0 ? 1 : -1) * Math.PI / 2.0);
         // force the transforms to take effect right away, important for collision detection
         this._mesh.updateMatrixWorld(true);
-        this._velocity = velocity.clone();
+        this._initialVelocity = velocity.clone();
         this._collisionEffect = collisionEffect;
         scene.add(this._mesh);
+        this.reset();
     }
 
     public get mesh() {
@@ -40,6 +42,14 @@ class Plane implements I3DObject {
 
     public stop() {
         this._velocity.set(0, 0, 0);
+    }
+
+    public reset() {
+        this._velocity = this._initialVelocity.clone();
+        this._mesh.position.x = 0;
+        this._mesh.position.z = 0;
+        this._mesh.updateMatrixWorld(true); // update vertex positions
+        this._texture.offset.x = 0;
     }
 
 }

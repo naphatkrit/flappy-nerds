@@ -35,14 +35,12 @@ class Ufo implements I3DObject {
         this._mesh.updateMatrix()
         geometry2.merge(geometry1, this._mesh.matrix)
         var mesh2 = new THREE.Mesh(geometry2, material2)
-        mesh2.position.x = -200
-        mesh2.position.y = 0
-        mesh2.position.z = 0
         this._mesh = mesh2
 
         this._velocity = initialVelocity.clone();
         this._scene = scene;
         scene.add(this._mesh);
+        this.reset();
     }
 
     public get mesh() {
@@ -59,5 +57,12 @@ class Ufo implements I3DObject {
 
     public removeFromScene() {
         this._scene.remove(this._mesh);
+    }
+
+    public reset() {
+        this._mesh.position.x = -200
+        this._mesh.position.y = 0
+        this._mesh.position.z = 0
+        this._mesh.updateMatrixWorld(true); // update vertex positions
     }
 }

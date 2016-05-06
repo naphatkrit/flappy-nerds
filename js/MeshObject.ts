@@ -17,4 +17,7 @@ class MeshObject implements I3DObject {
 
     public update(deltaSeconds: number): void {
     }
+
+    public reset(): void {
+    }
 }

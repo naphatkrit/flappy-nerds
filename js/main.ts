@@ -182,6 +182,14 @@ class Main {
                         this._togglePause();
                     }
                 },
+                {
+                    keyCode: 82,
+                    keyDisplay: 'r',
+                    help: 'Restart.',
+                    handler: (event)=>{
+                        this.updater.reset();
+                    }
+                }
             ],
             'Others': [
                 {
@@ -238,6 +246,10 @@ class Main {
         $('#pause-btn').on('click', ()=>{
             $('#pause-btn').blur();
             this._togglePause();
+        });
+        $('#restart-btn').on('focus', ()=> {
+            $('#restart-btn').blur();
+            this.updater.reset();
         });
         $('#help-btn').on('focus', ()=> {
             $('#help-btn').blur();

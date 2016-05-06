@@ -73,6 +73,10 @@ class Updater {
         var collision = Collision.collide(this._bird, obstacleObjects);
 
         if (collision !== null) {
+            if (this._bird._state == BirdState.Alive) {
+                console.log('Just died');
+                collision = Collision.collide(this._bird, obstacleObjects);
+            }
             switch (collision.collisionEffect) {
                 case CollisionEffect.None:
                     break;
@@ -92,8 +96,7 @@ class Updater {
         var obstacle = this._nextVisibleOstacle();
         if (this._prevVisibleObstacle !== obstacle) {
             if (this._prevVisibleObstacle !== null) {
-                this._score++;
-                $('#score').text(this._score);
+                this.score++;
             }
             this._prevVisibleObstacle = obstacle;
         }
@@ -105,6 +108,36 @@ class Updater {
         this._bottomPlane.update(deltaSeconds);
         this._bird.update(deltaSeconds);
         this._ufo.update(deltaSeconds);
+        this._cameraRig.position.x = this._bird.mesh.position.x;
+    }
+
+    private get score() {
+        return this._score;
+    }
+
+    private set score(value: number) {
+        this._score = value;
+        $('#score').text(this._score);
+    }
+
+    public reset() {
+        this._rand = new lfsr(Config.RAND_SEED);
+        this._prevTime = this._watch.ms;
+        this._nextObstacleTime = this._prevTime + this.obstacleInterval;
+
+        this._prevVisibleObstacle = null;
+
+        for (var i = 0; i < this._obstacles.length; ++i) {
+            this._obstacles[i].removeFromScene();
+        }
+        this._obstacles = [];
+
+        this.score = 0;
+
+        this._bird.reset();
+        this._topPlane.reset();
+        this._bottomPlane.reset();
+        this._ufo.reset();
         this._cameraRig.position.x = this._bird.mesh.position.x;
     }
 
