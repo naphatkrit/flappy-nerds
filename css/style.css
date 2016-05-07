@@ -33,12 +33,34 @@ html, body {
 #main-control {
     font-family: ka1, sans-serif;
     position: absolute;
-    top: 2em;
-    right: 2em;
+    bottom: 2em;
+    left: 0;
+    right: 0;
+    text-align: center;
     z-index: 1040;
 }
 
-#score {
+#bird-control {
+    font-family: ka1, sans-serif;
+    position: absolute;
+    bottom: 7em;
+    margin-right: 75%;
+    margin-left: 25%;
+    text-align: center;
+    z-index: 1040;
+}
+
+#ufo-control {
+    font-family: ka1, sans-serif;
+    position: absolute;
+    bottom: 7em;
+    margin-right: 25%;
+    margin-left: 75%;
+    text-align: center;
+    z-index: 1040;
+}
+
+.score {
     color: black;
     background-color: white;
     border-color: #2e6da4;
@@ -56,6 +78,9 @@ html, body {
     background-image: none;
     border: 1px solid transparent;
     border-radius: 4px;
+
+    margin-left: 5em;
+    margin-right: 5em;
 }
 
 .keys {

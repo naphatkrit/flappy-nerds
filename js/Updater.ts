@@ -149,7 +149,7 @@ class Updater {
 
     private set birdScore(value: number) {
         this._birdScore = value;
-        $('#score').text(this._birdScore);
+        $('#bird-score').text(this._birdScore);
     }
 
     private get ufoScore() {

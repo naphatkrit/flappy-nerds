@@ -9,11 +9,16 @@
 
 <body>
     <div id='main-control'>
-        <div id="score">0</div>
+        <div id="bird-score" class="score">0</div>
         <button id="autopilot-btn" type="button" class="btn btn-primary">Autopilot</button>
         <button id="pause-btn" type="button" class="btn btn-default">Pause</button>
         <button id="restart-btn" type="button" class="btn btn-default">Restart</button>
         <button id="help-btn" type="button" class="btn btn-default" data-toggle="modal" data-target="#help-modal">?</button>
+        <div id="ufo-score" class="score">0</div>
+    </div>
+    <div id='bird-control'>
+    </div>
+    <div id='ufo-control'>
     </div>
     <!-- Modal -->
     <div class="modal fade" id="help-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
