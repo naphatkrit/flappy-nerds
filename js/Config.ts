@@ -25,6 +25,7 @@ abstract class Config {
     public static BULLET_COST = 1;
     public static BULLET_HIT_REWARD = 3;
     public static DEAD_BIRD_REWARD = 10;
+    public static STARS_BLOCK_SIZE = 2000;
 
     //parameters for the UFO
     public static UFO_BASE_RADIUS = 60;
