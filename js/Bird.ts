@@ -21,6 +21,8 @@ class Bird implements I3DObject {
     private _counter: number;
     private _needmix: boolean;
 
+    private _boundingRadius: number;
+
     constructor(scene: THREE.Scene, initialVelocity: THREE.Vector3, gravity: THREE.Vector3, jumpVelocity: THREE.Vector3) {
         this._initialVelocity = initialVelocity.clone();
         this._gravity = gravity.clone();
@@ -49,6 +51,8 @@ class Bird implements I3DObject {
                 scene.add(this._mesh);
                 this._mesh.geometry.computeBoundingBox();
                 this._height = (this._mesh.geometry.boundingBox.max.y - this._mesh.geometry.boundingBox.min.y);
+                this._mesh.geometry.computeBoundingSphere();
+                this._boundingRadius = this._mesh.geometry.boundingSphere.radius;
                 this._mixer = new THREE.AnimationMixer(this._mesh);
                 var clip = THREE.AnimationClip.CreateFromMorphTargetSequence('gallop', geometry.morphTargets, 30);
                 this._mixer.clipAction(clip).setDuration(1).play();
@@ -83,6 +87,10 @@ class Bird implements I3DObject {
 
     public get height() {
         return this._height;
+    }
+
+    public get boundingRadius() {
+        return this._boundingRadius;
     }
 
     public update(deltaSeconds: number) {

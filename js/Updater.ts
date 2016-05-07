@@ -7,11 +7,14 @@ class Updater {
     private _topPlane: Plane;
     private _bottomPlane: Plane;
     private _obstacles: IObstacle[];
+    private _bullets: Bullet[];
     private _scene: THREE.Scene;
+    private _needsShoot = false;
 
     private _rand: lfsr;
     private _prevVisibleObstacle: IObstacle = null;
-    private _score: number = 0;
+    private _birdScore: number = 0;
+    private _ufoScore: number = 0;
 
     private _watch: Stopwatch;
 
@@ -44,6 +47,7 @@ class Updater {
         this._topPlane = topPlane;
         this._bottomPlane = bottomPlane;
         this._obstacles = [];
+        this._bullets = [];
         this._scene = scene;
     }
 
@@ -65,6 +69,12 @@ class Updater {
 
         this._generateObstacles();
         this._cleanObstacles();
+
+        if (this._needsShoot) {
+            this.shoot();
+            this._needsShoot = false;
+        }
+        this._cleanBullets();
 
         var obstacleObjects = new Array<I3DObject>();
         for (var i = 0; i < this._obstacles.length; ++i) {
@@ -91,11 +101,29 @@ class Updater {
             }
         }
 
+        for (var i = 0; i < this._bullets.length; ++i) {
+            var kill = false;
+            if (this._bullets[i].mesh.position.distanceTo(this._bird.mesh.position) < Config.BULLET_RADIUS + this._bird.boundingRadius) {
+                this.ufoScore++;
+                kill = true;
+            } else {
+                var bulletCollision = Collision.collide(this._bullets[i], obstacleObjects);
+                if (bulletCollision !== null) {
+                    kill = true;
+                }
+            }
+            if (kill) {
+                this._bullets[i].removeFromScene();
+                this._bullets.splice(i, 1);
+                i -= 1;
+            }
+        }
+
         var obstacleBird = this._nextVisibleOstacle(this._bird.mesh.position.x);
         var obstacleUfo = this._nextVisibleOstacle(this._ufo.mesh.position.x);
         if (this._prevVisibleObstacle !== obstacleBird) {
             if (this._prevVisibleObstacle !== null) {
-                this.score++;
+                this.birdScore++;
             }
             this._prevVisibleObstacle = obstacleBird;
         }
@@ -108,17 +136,29 @@ class Updater {
         this._bird.update(deltaSeconds);
         this._ufo.targetbox = (obstacleUfo === null ? null : obstacleUfo.safeBox);
         this._ufo.update(deltaSeconds);
+        for (var i = 0; i < this._bullets.length; ++i) {
+            this._bullets[i].update(deltaSeconds);
+        }
         this._cameraRig.position.x = this._bird.mesh.position.x;
         this._firstPersonCam.position.y = this._ufo.mesh.position.y;
     }
 
-    private get score() {
-        return this._score;
+    private get birdScore() {
+        return this._birdScore;
     }
 
-    private set score(value: number) {
-        this._score = value;
-        $('#score').text(this._score);
+    private set birdScore(value: number) {
+        this._birdScore = value;
+        $('#score').text(this._birdScore);
+    }
+
+    private get ufoScore() {
+        return this._ufoScore;
+    }
+
+    private set ufoScore(value: number) {
+        this._ufoScore = value;
+        $('#ufo-score').text(this._ufoScore);
     }
 
     public reset() {
@@ -133,13 +173,22 @@ class Updater {
         }
         this._obstacles = [];
 
-        this.score = 0;
+        this.birdScore = 0;
 
         this._bird.reset();
         this._topPlane.reset();
         this._bottomPlane.reset();
         this._ufo.reset();
         this._cameraRig.position.x = this._bird.mesh.position.x;
+    }
+
+    private shoot() {
+        var bullet = new Bullet(this._scene, new THREE.Ray(this._ufo.mesh.position, new THREE.Vector3(1, 0, 0)), Config.BULLET_SPEED);
+        this._bullets.push(bullet);
+    }
+
+    public setNeedsShoot() {
+        this._needsShoot = true;
     }
 
     private _nextObstacleTime: number;
@@ -176,6 +225,14 @@ class Updater {
         while (this._obstacles.length > 0 && this._obstacles[0].safeBox.max.x < minXPos) {
             var obstacle = this._obstacles.shift();
             obstacle.removeFromScene();
+        }
+    }
+
+    private _cleanBullets() {
+        var maxXPos = this._bird.mesh.position.x + window.innerWidth/2;
+        while (this._bullets.length > 0 && this._bullets[0].mesh.position.x > maxXPos) {
+            var bullet = this._bullets.shift();
+            bullet.removeFromScene();
         }
     }
 }

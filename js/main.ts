@@ -147,15 +147,7 @@ class Main {
                     }
                 },
             ],
-            'Game Control': [
-                {
-                    keyCode: 32,
-                    keyDisplay: '<SPC>',
-                    help: 'Jump.',
-                    handler: (event)=>{
-                        this.bird.setNeedsJump();
-                    }
-                },
+            'Game Control (general)': [
                 {
                     keyCode: 65,
                     keyDisplay: 'a',
@@ -178,6 +170,26 @@ class Main {
                     help: 'Restart.',
                     handler: (event)=>{
                         this.updater.reset();
+                    }
+                }
+            ],
+            'Game Control (bird)': [
+                {
+                    keyCode: 32,
+                    keyDisplay: '<SPC>',
+                    help: 'Jump.',
+                    handler: (event)=>{
+                        this.bird.setNeedsJump();
+                    }
+                },
+            ],
+            'Game Control (UFO)': [
+                {
+                    keyCode: 16,
+                    keyDisplay: 'Shift',
+                    help: 'Shoot.',
+                    handler: (event)=>{
+                        this.updater.setNeedsShoot();
                     }
                 }
             ],
