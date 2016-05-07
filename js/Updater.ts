@@ -93,6 +93,7 @@ class Updater {
                     this._bird.fall();
                     this._topPlane.stop();
                     this._bottomPlane.stop();
+                    this._ufo.stop();
                     if (!this._deathRewarded) {
                         this.ufoScore += Config.DEAD_BIRD_REWARD;
                         this._deathRewarded = true;
@@ -102,6 +103,7 @@ class Updater {
                     this._bird.die();
                     this._topPlane.stop();
                     this._bottomPlane.stop();
+                    this._ufo.stop();
                     if (!this._deathRewarded) {
                         this.ufoScore += Config.DEAD_BIRD_REWARD;
                         this._deathRewarded = true;
