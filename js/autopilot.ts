@@ -8,14 +8,15 @@ abstract class autopilot {
         var ymin:number = box.min.y
         var ymax:number = box.max.y
 
-        return (ymax + ymin) / 2.0
+        return ymin;
+        // return (ymax + ymin) / 2.0
     }
 
     public static control(bird:Bird, targetBox:THREE.Box3) {
         var birdPosY: number = bird.mesh.position.y
         var height = bird.height
-        if ((birdPosY - this.getTargetHeight(targetBox)) < -height - 50) {
-            bird.setNeedsJump() 
+        if ((birdPosY - this.getTargetHeight(targetBox)) - height < 30) {
+            bird.setNeedsJump()
         }
     }
 }
