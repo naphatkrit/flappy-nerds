@@ -85,10 +85,6 @@ class Bird implements I3DObject {
         return this._height;
     }
 
-    public get state() {
-        return this._state;
-    }
-
     public update(deltaSeconds: number) {
         if (this._needmix) {
             if (this._mixer) {

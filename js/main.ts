@@ -36,16 +36,6 @@ class Main {
 
     private _initScene() {
         this.scene = new THREE.Scene();
-        var geometry = new THREE.Geometry();
-        for (var i = 0; i < 10000; i++) {
-            var vertex = new THREE.Vector3();
-            vertex.x = THREE.Math.randFloatSpread(2000);
-            vertex.y = THREE.Math.randFloatSpread(2000);
-            vertex.z = THREE.Math.randFloatSpread(2000);
-            geometry.vertices.push(vertex);
-        }
-        var particles = new THREE.Points(geometry, new THREE.PointsMaterial({ color: 0x888888 }));
-        this.scene.add(particles);
     }
 
     private _initPlanes() {
@@ -56,7 +46,7 @@ class Main {
 
     private _initCameras() {
 
-        this.cameraPerspective = new THREE.PerspectiveCamera(50, 0.5 * this.aspect, 150, 1500);
+        this.cameraPerspective = new THREE.PerspectiveCamera(50, 0.5 * this.aspect, 150, 3000);
         // counteract different front orientation of cameras vs rig
         this.cameraPerspective.rotation.y = Math.PI;
 
@@ -65,7 +55,7 @@ class Main {
         this.cameraPerspective.position.z = 1000;
         this.cameraPerspective.lookAt(new THREE.Vector3(this.cameraPerspective.position.x, this.cameraPerspective.position.y, -1));
 
-        this.cameraFirstPerson = new THREE.PerspectiveCamera(50, 0.5 * this.aspect, Config.FIRST_PERSON_DISTANCE - 100, Config.FIRST_PERSON_DISTANCE + 3000);
+        this.cameraFirstPerson = new THREE.PerspectiveCamera(50, 0.5 * this.aspect, Config.FIRST_PERSON_DISTANCE - 150, Config.FIRST_PERSON_DISTANCE + 3000);
         // counteract different front orientation of cameras vs rig
         this.cameraFirstPerson.rotation.y = Math.PI;
 
