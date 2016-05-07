@@ -14,7 +14,6 @@ class Bullet implements I3DObject {
         var material_head = new THREE.MeshPhongMaterial({ map: head, wireframe: false});
         var material_body = new THREE.MeshPhongMaterial({ map: body, wireframe: false});
 
-        var singleGeometry = new THREE.Geometry();
         //bullet head
         var mesh_head = new THREE.Mesh(
             geometry_head,
@@ -25,7 +24,16 @@ class Bullet implements I3DObject {
             material_body
         );
 
-        this._mesh = new THREE.Mesh()
+        var geometry_single = geometry_head.clone();
+        geometry_single.merge(geometry_body.clone(), mesh_body.matrix);
+        var material_single = new THREE.MeshBasicMaterial({ map: head, wireframe: false});
+        material_single.opacity = 0.0;
+        material_single.transparent = true;
+
+        this._mesh = new THREE.Mesh(
+            geometry_single,
+            material_single
+        )
         this._mesh.updateMatrix()
         this._mesh.add(mesh_body)
         this._mesh.add(mesh_head)
