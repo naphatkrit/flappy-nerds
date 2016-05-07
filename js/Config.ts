@@ -32,5 +32,5 @@ abstract class Config {
     public static UFO_UPPER_RADIUS = 30;
     public static UFO_GUN_LENGTH = 50;
     public static UFO_GUN_MUZZLE_LENGTH = 20;
-    public static UFO_BASE_SPPED = 1500
+    public static UFO_BASE_SPPED = 2000
 }
