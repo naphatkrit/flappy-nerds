@@ -101,52 +101,6 @@ class Main {
 
     private _initKeyHandlers() {
         var keyHandlers: {[text:string]:IKeyHandler[]} = {
-            'Camera': [
-                {
-                    keyCode: 49,
-                    keyDisplay: '1',
-                    help: 'Switch left view to side view.',
-                    handler: (event)=>{
-                        this.activeCamera = this.cameraPerspective;
-                        if (Config.DEBUG) {
-                            this.activeHelper = this.cameraPerspectiveHelper;
-                        }
-                    }
-                },
-                {
-                    keyCode: 50,
-                    keyDisplay: '2',
-                    help: 'Switch left view to first-person view.',
-                    handler: (event)=>{
-                        this.activeCamera = this.cameraFirstPerson;
-                        if (Config.DEBUG) {
-                            this.activeHelper = this.cameraFirstPersonHelper;
-                        }
-                    }
-                },
-                {
-                    keyCode: 81,
-                    keyDisplay: 'q',
-                    help: 'Switch right view to side view.',
-                    handler: (event)=>{
-                        this.activeCamera2 = this.cameraPerspective;
-                        if (Config.DEBUG) {
-                            this.activeHelper2 = this.cameraPerspectiveHelper;
-                        }
-                    }
-                },
-                {
-                    keyCode: 87,
-                    keyDisplay: 'w',
-                    help: 'Switch right view to first-person view.',
-                    handler: (event)=>{
-                        this.activeCamera2 = this.cameraFirstPerson;
-                        if (Config.DEBUG) {
-                            this.activeHelper2 = this.cameraFirstPersonHelper;
-                        }
-                    }
-                },
-            ],
             'Game Control (general)': [
                 {
                     keyCode: 65,
