@@ -68,6 +68,19 @@ class Updater {
             return;
         }
 
+        if (this._bird.mesh.position.y < this._bottomPlane.mesh.position.y) {
+            // collision may not have caught this. just stop the game
+            this._bird.die();
+            this._topPlane.stop();
+            this._bottomPlane.stop();
+            this._ufo.stop();
+            if (!this._deathRewarded) {
+                this.ufoScore += Config.DEAD_BIRD_REWARD;
+                this._deathRewarded = true;
+            }
+            return;
+        }
+
         this._generateObstacles();
         this._cleanObstacles();
 
