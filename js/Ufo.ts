@@ -109,7 +109,7 @@ class Ufo implements I3DObject {
         var ufoPosY: number = this._mesh.position.y
         var disDiff: number = ufoPosY - this.getTargetHeight(this._targetbox)
         if (disDiff < - 10 || disDiff > 10) {
-            this._velocity.y = - 1000 * disDiff / (Config.MAX_Y - Config.MIN_Y)
+            this._velocity.y = - Config.UFO_BASE_SPPED * disDiff / (Config.MAX_Y - Config.MIN_Y)
         }
         else {
             this._velocity.y = 0

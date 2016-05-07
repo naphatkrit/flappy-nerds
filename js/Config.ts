@@ -17,7 +17,7 @@ abstract class Config {
     public static SIDE_CAMERA_OFFSET = 0;
     public static UFO_BIRD_DISTANCE = 300;
 
-    public static BULLET_RADIUS = 10;
+    public static BULLET_RADIUS = 7;
     public static BULLET_LENGTH = 30;
     public static BULLET_COLOR = 0xff00ff;
     public static BULLET_SPEED = 500;
@@ -32,4 +32,5 @@ abstract class Config {
     public static UFO_UPPER_RADIUS = 30;
     public static UFO_GUN_LENGTH = 50;
     public static UFO_GUN_MUZZLE_LENGTH = 20;
+    public static UFO_BASE_SPPED = 1500
 }
