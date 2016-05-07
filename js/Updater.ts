@@ -22,6 +22,8 @@ class Updater {
     public autopilotEnabled = true;
     private _paused = false;
 
+    private _starsBlocks: StarsBlock[];
+
     public get paused() {
         return this._paused;
     }
@@ -50,6 +52,7 @@ class Updater {
         this._obstacles = [];
         this._bullets = [];
         this._scene = scene;
+        this._starsBlocks = [];
     }
 
     public update() {
@@ -80,6 +83,8 @@ class Updater {
             }
             return;
         }
+
+        this._generateStars();
 
         this._generateObstacles();
         this._cleanObstacles();
@@ -259,6 +264,22 @@ class Updater {
         while (this._bullets.length > 0 && this._bullets[0].mesh.position.x > maxXPos) {
             var bullet = this._bullets.shift();
             bullet.removeFromScene();
+        }
+    }
+
+    private _generateStars() {
+        var minXPos = this._bird.mesh.position.x + window.innerWidth/2;
+        while (this._starsBlocks.length == 0 || this._starsBlocks[this._starsBlocks.length - 1].minX < minXPos) {
+            var currentMin = this._starsBlocks.length == 0 ? 0 : this._starsBlocks[this._starsBlocks.length - 1].maxX;
+            this._starsBlocks.push(new StarsBlock(this._scene, currentMin, Config.STARS_BLOCK_SIZE));
+        }
+    }
+
+    private _cleanStars() {
+        var minXPos = this._bird.mesh.position.x - window.innerWidth/2;
+        while (this._starsBlocks.length > 0 && this._starsBlocks[0].maxX < minXPos) {
+            var starsBlock = this._starsBlocks.shift();
+            starsBlock.removeFromScene();
         }
     }
 }
