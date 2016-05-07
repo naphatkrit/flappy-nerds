@@ -18,6 +18,7 @@ abstract class Config {
     public static UFO_BIRD_DISTANCE = 300;
 
     public static BULLET_RADIUS = 10;
+    public static BULLET_LENGTH = 30;
     public static BULLET_COLOR = 0xff00ff;
     public static BULLET_SPEED = 500;
 
