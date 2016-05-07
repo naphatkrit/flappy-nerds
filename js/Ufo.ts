@@ -4,43 +4,52 @@ class Ufo implements I3DObject {
     private _velocity: THREE.Vector3;
     private _scene: THREE.Scene;
     private _mixer: THREE.AnimationMixer;
-
     private _needmix: boolean = false;
+    private _targetbox: THREE.Box3 = null;
 
     constructor(scene: THREE.Scene, bird: Bird, initialVelocity: THREE.Vector3, initialPosition: THREE.Vector3) {
-        var texture1 = new THREE.TextureLoader().load("js/textures/wood.jpg");
-        var texture2 = new THREE.TextureLoader().load("js/textures/metal.jpg");
-        var material1 = new THREE.MeshBasicMaterial(
+        var textureUfoBase = new THREE.TextureLoader().load("js/textures/metal.jpg");
+        var textureUfoUpper = new THREE.TextureLoader().load("js/textures/water.jpg");
+        var materialUfoBase = new THREE.MeshPhongMaterial(
             {
-                map: texture1,
-                side: THREE.DoubleSide
+                map: textureUfoBase,
             }
         );
-        var material2 = new THREE.MeshBasicMaterial(
+        var materialUfoUpper = new THREE.MeshPhongMaterial(
             {
-                map: texture2,
-                side: THREE.DoubleSide
+                map: textureUfoUpper,
+                emissive: 0x007a99,
             }
         );
-        var geometry1 = new THREE.SphereGeometry(60, 30, 30)
-        geometry1.applyMatrix(new THREE.Matrix4().makeScale(1.0, 0.4, 1));
+        var geometryUfoBase = new THREE.SphereGeometry(60, 30, 30)
+        geometryUfoBase.applyMatrix(new THREE.Matrix4().makeScale(1.0, 0.4, 1));
+        var meshUfoBase = new THREE.Mesh(geometryUfoBase, materialUfoBase)
 
-        this._mesh = new THREE.Mesh(geometry1, material1)
-        this._bird = bird
-        this._mesh.position.x = 0
-        this._mesh.position.y = -15
-        this._mesh.position.z = 0
+        var geometryUfoUpper = new THREE.SphereGeometry(30, 30, 30)
+        var meshUfoUpper = new THREE.Mesh(geometryUfoUpper, materialUfoUpper)
 
-        var geometry2 = new THREE.SphereGeometry(30, 30, 30)
+        this._mesh = new THREE.Mesh()
         this._mesh.updateMatrix()
-        geometry2.merge(geometry1, this._mesh.matrix)
-        var mesh2 = new THREE.Mesh(geometry2, material2)
-        this._mesh = mesh2
+        this._mesh.add(meshUfoBase)
+        this._mesh.add(meshUfoUpper)
+        meshUfoUpper.position.y = 15
 
+        this._bird = bird
         this._velocity = initialVelocity.clone();
         this._scene = scene;
         scene.add(this._mesh);
         this.reset();
+    }
+
+    private getTargetHeight(box: THREE.Box3): number {
+        if (box == null) {
+            return 0;
+        }
+
+        var ymin: number = box.min.y
+        var ymax: number = box.max.y
+
+        return (ymax + ymin) / 2.0
     }
 
     public get mesh() {
@@ -51,7 +60,21 @@ class Ufo implements I3DObject {
         return CollisionEffect.None;
     }
 
+    public set targetbox(target: THREE.Box3) {
+        this._targetbox = target
+    }
+
     public update(deltaSeconds: number) {
+        var ufoPosY: number = this._mesh.position.y
+        if ((ufoPosY - this.getTargetHeight(this._targetbox)) < - 10) {
+            this._velocity.y = 200
+        }
+        else if ((ufoPosY - this.getTargetHeight(this._targetbox)) > 10) {
+            this._velocity.y = -200
+        }
+        else {
+            this._velocity.y = 0
+        }
         this._mesh.position.addScaledVector(this._velocity, deltaSeconds);
     }
 

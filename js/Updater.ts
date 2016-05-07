@@ -93,20 +93,22 @@ class Updater {
             }
         }
 
-        var obstacle = this._nextVisibleOstacle();
-        if (this._prevVisibleObstacle !== obstacle) {
+        var obstacleBird = this._nextVisibleOstacle(this._bird.mesh.position.x);
+        var obstacleUfo = this._nextVisibleOstacle(this._ufo.mesh.position.x);
+        if (this._prevVisibleObstacle !== obstacleBird) {
             if (this._prevVisibleObstacle !== null) {
                 this.score++;
             }
-            this._prevVisibleObstacle = obstacle;
+            this._prevVisibleObstacle = obstacleBird;
         }
         if (this.autopilotEnabled) {
-            var controlTarget = obstacle === null ? null : obstacle.safeBox;
+            var controlTarget = obstacleBird === null ? null : obstacleBird.safeBox;
             autopilot.control(this._bird, controlTarget)
         }
         this._topPlane.update(deltaSeconds);
         this._bottomPlane.update(deltaSeconds);
         this._bird.update(deltaSeconds);
+        this._ufo.targetbox = (obstacleUfo === null ? null : obstacleUfo.safeBox);
         this._ufo.update(deltaSeconds);
         this._cameraRig.position.x = this._bird.mesh.position.x;
     }
@@ -161,8 +163,7 @@ class Updater {
         }
     }
 
-    private _nextVisibleOstacle(): IObstacle {
-        var xPos = this._bird.mesh.position.x;
+    private _nextVisibleOstacle(xPos): IObstacle {
         for (var i = 0; i < this._obstacles.length; ++i) {
             if (this._obstacles[i].safeBox.max.x > xPos) {
                 return this._obstacles[i];
