@@ -11,7 +11,7 @@ class Plane implements I3DObject {
         var texture = new THREE.TextureLoader().load( "js/textures/water.jpg" );
         texture.wrapS = THREE.MirroredRepeatWrapping;
         texture.wrapT = THREE.MirroredRepeatWrapping;
-        this._size = window.innerWidth;
+        this._size = window.innerWidth * 1.5;
         this._mesh = new THREE.Mesh(
             new THREE.PlaneGeometry(this._size, this._size, 1, 1),
             new THREE.MeshPhongMaterial({ map: texture, wireframe: false})
