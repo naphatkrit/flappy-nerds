@@ -20,4 +20,8 @@ abstract class Config {
     public static BULLET_RADIUS = 10;
     public static BULLET_COLOR = 0xff00ff;
     public static BULLET_SPEED = 500;
+
+    public static BULLET_COST = 1;
+    public static BULLET_HIT_REWARD = 3;
+    public static DEAD_BIRD_REWARD = 10;
 }
