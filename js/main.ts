@@ -36,16 +36,6 @@ class Main {
 
     private _initScene() {
         this.scene = new THREE.Scene();
-        var geometry = new THREE.Geometry();
-        for (var i = 0; i < 10000; i++) {
-            var vertex = new THREE.Vector3();
-            vertex.x = THREE.Math.randFloatSpread(2000);
-            vertex.y = THREE.Math.randFloatSpread(2000);
-            vertex.z = THREE.Math.randFloatSpread(2000);
-            geometry.vertices.push(vertex);
-        }
-        var particles = new THREE.Points(geometry, new THREE.PointsMaterial({ color: 0x888888 }));
-        this.scene.add(particles);
     }
 
     private _initPlanes() {
