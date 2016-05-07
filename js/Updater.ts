@@ -73,10 +73,6 @@ class Updater {
         var collision = Collision.collide(this._bird, obstacleObjects);
 
         if (collision !== null) {
-            if (this._bird._state == BirdState.Alive) {
-                console.log('Just died');
-                collision = Collision.collide(this._bird, obstacleObjects);
-            }
             switch (collision.collisionEffect) {
                 case CollisionEffect.None:
                     break;
