@@ -1,12 +1,12 @@
 abstract class Config {
-    public static VELOCITY = new THREE.Vector3(100, 0, 0);
+    public static VELOCITY = new THREE.Vector3(150, 0, 0);
     public static DEBUG = false;
     public static GRAVITY = new THREE.Vector3(0, -2000, 0);
-    public static JUMP_VELOCITY = new THREE.Vector3(100, 600, 0);
+    public static JUMP_VELOCITY = new THREE.Vector3(Config.VELOCITY.x, 600, 0);
     public static MAX_Y = 400;
     public static MIN_Y = -400;
-    public static OBSTACLE_INTERVAL = 4500;
-    public static OBSTACLE_RANGE = 1500;
+    public static OBSTACLE_INTERVAL = 3000;
+    public static OBSTACLE_RANGE = 1000;
     public static RAND_SEED = 35;
     public static OBSTACLE_BOX_SIZE = (Config.MAX_Y - Config.MIN_Y)/ 3.5;
     public static OBSTACLE_BOX_RANGE = Config.OBSTACLE_BOX_SIZE / 4;
