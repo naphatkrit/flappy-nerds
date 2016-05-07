@@ -204,6 +204,7 @@ class Updater {
         this._obstacles = [];
 
         this.birdScore = 0;
+        this.ufoScore = 0;
 
         this._bird.reset();
         this._topPlane.reset();
