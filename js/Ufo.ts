@@ -66,11 +66,9 @@ class Ufo implements I3DObject {
 
     public update(deltaSeconds: number) {
         var ufoPosY: number = this._mesh.position.y
-        if ((ufoPosY - this.getTargetHeight(this._targetbox)) < - 10) {
-            this._velocity.y = 200
-        }
-        else if ((ufoPosY - this.getTargetHeight(this._targetbox)) > 10) {
-            this._velocity.y = -200
+        var disDiff: number = ufoPosY - this.getTargetHeight(this._targetbox)
+        if (disDiff < - 10 || disDiff > 10) {
+            this._velocity.y = - 1000 * disDiff / (Config.MAX_Y - Config.MIN_Y)
         }
         else {
             this._velocity.y = 0
@@ -83,7 +81,7 @@ class Ufo implements I3DObject {
     }
 
     public reset() {
-        this._mesh.position.x = -200
+        this._mesh.position.x = -Config.UFO_BIRD_DISTANCE
         this._mesh.position.y = 0
         this._mesh.position.z = 0
         this._mesh.updateMatrixWorld(true); // update vertex positions

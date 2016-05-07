@@ -3,6 +3,7 @@ class Updater {
     private _bird: Bird;
     private _ufo: Ufo;
     private _cameraRig: THREE.Group;
+    private _firstPersonCam: THREE.Camera
     private _topPlane: Plane;
     private _bottomPlane: Plane;
     private _obstacles: IObstacle[];
@@ -30,7 +31,7 @@ class Updater {
         }
     }
 
-    constructor(scene: THREE.Scene, bird: Bird, ufo: Ufo, cameraRig: THREE.Group, topPlane: Plane, bottomPlane: Plane) {
+    constructor(scene: THREE.Scene, bird: Bird, ufo: Ufo, cameraRig: THREE.Group, firstPersonCam: THREE.Camera, topPlane: Plane, bottomPlane: Plane) {
         this._watch = new Stopwatch();
         this._watch.start();
         this._rand = new lfsr(Config.RAND_SEED);
@@ -39,6 +40,7 @@ class Updater {
         this._bird = bird;
         this._ufo = ufo;
         this._cameraRig = cameraRig;
+        this._firstPersonCam = firstPersonCam;
         this._topPlane = topPlane;
         this._bottomPlane = bottomPlane;
         this._obstacles = [];
@@ -107,6 +109,7 @@ class Updater {
         this._ufo.targetbox = (obstacleUfo === null ? null : obstacleUfo.safeBox);
         this._ufo.update(deltaSeconds);
         this._cameraRig.position.x = this._bird.mesh.position.x;
+        this._firstPersonCam.position.y = this._ufo.mesh.position.y;
     }
 
     private get score() {
