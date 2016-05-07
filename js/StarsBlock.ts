@@ -12,8 +12,8 @@ class StarsBlock {
         for (var i = 0; i < 10000; ++i) {
             var vertex = new THREE.Vector3();
             vertex.x = THREE.Math.randFloat(minX, minX + range);
-            vertex.y = THREE.Math.randFloatSpread(4000);
-            vertex.z = THREE.Math.randFloatSpread(4000);
+            vertex.y = THREE.Math.randFloatSpread(2000);
+            vertex.z = THREE.Math.randFloatSpread(1000);
             geometry.vertices.push(vertex);
         }
         this._particles = new THREE.Points(geometry, new THREE.PointsMaterial({ color: 0x888888 }));
