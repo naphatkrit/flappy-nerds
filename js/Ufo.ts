@@ -21,17 +21,45 @@ class Ufo implements I3DObject {
                 emissive: 0x007a99,
             }
         );
-        var geometryUfoBase = new THREE.SphereGeometry(60, 30, 30)
+        var materialUfoGun = new THREE.MeshPhongMaterial(
+            {
+                map: textureUfoBase,
+                emissive: 0x999900,
+                emissiveIntensity: 0.3,
+            }
+        );
+        var geometryUfoBase = new THREE.SphereGeometry(Config.UFO_BASE_RADIUS, 15, 15)
         geometryUfoBase.applyMatrix(new THREE.Matrix4().makeScale(1.0, 0.4, 1));
         var meshUfoBase = new THREE.Mesh(geometryUfoBase, materialUfoBase)
 
-        var geometryUfoUpper = new THREE.SphereGeometry(30, 30, 30)
+        var geometryUfoUpper = new THREE.SphereGeometry(Config.UFO_UPPER_RADIUS, 15, 15)
         var meshUfoUpper = new THREE.Mesh(geometryUfoUpper, materialUfoUpper)
+
+        var geometryUfoGun1 = new THREE.CylinderGeometry(12, 12, Config.UFO_GUN_LENGTH + 20)
+        geometryUfoGun1.rotateZ(-Math.PI / 2)
+        var meshUfoGun1 = new THREE.Mesh(geometryUfoGun1, materialUfoGun)
+        var geometryUfoGun2 = new THREE.CylinderGeometry(10, 10, Config.UFO_GUN_MUZZLE_LENGTH)
+        geometryUfoGun2.rotateZ(-Math.PI / 2)
+        var meshUfoGun2 = new THREE.Mesh(geometryUfoGun2, new THREE.MeshBasicMaterial({color:0x000000}))
+        var geometryUfoGun3 = new THREE.CylinderGeometry(15, 15, Config.UFO_GUN_MUZZLE_LENGTH)
+        geometryUfoGun3.rotateZ(-Math.PI / 2)
+        var meshUfoGun3 = new THREE.Mesh(geometryUfoGun3, materialUfoGun)
+        //meshUfoGun1.position.x = 60
+        //meshUfoGun1.updateMatrix()
+        //geometryUfoBase.merge(geometryUfoGun1, meshUfoGun1.matrix)
+        //var meshUfoBase = new THREE.Mesh(geometryUfoBase, materialUfoBase)
+
 
         this._mesh = new THREE.Mesh()
         this._mesh.updateMatrix()
         this._mesh.add(meshUfoBase)
         this._mesh.add(meshUfoUpper)
+        this._mesh.add(meshUfoGun1)
+        this._mesh.add(meshUfoGun2)
+        this._mesh.add(meshUfoGun3)
+        meshUfoGun1.position.x = Config.UFO_BASE_RADIUS + Config.UFO_GUN_LENGTH / 2.0
+        meshUfoGun2.position.x = Config.UFO_BASE_RADIUS + Config.UFO_GUN_LENGTH + Config.UFO_GUN_MUZZLE_LENGTH / 2.0
+        meshUfoGun3.position.x = Config.UFO_BASE_RADIUS + Config.UFO_GUN_LENGTH + Config.UFO_GUN_MUZZLE_LENGTH / 2.0
         meshUfoUpper.position.y = 15
 
         this._bird = bird
@@ -64,6 +92,11 @@ class Ufo implements I3DObject {
         this._targetbox = target
     }
 
+    public getBulletPos() : THREE.Vector3 {
+        var tmp: THREE.Vector3 = new THREE.Vector3(110, 0, 0)
+        return this._mesh.position.clone().add(tmp)
+    }
+
     public update(deltaSeconds: number) {
         var ufoPosY: number = this._mesh.position.y
         var disDiff: number = ufoPosY - this.getTargetHeight(this._targetbox)
@@ -86,4 +119,6 @@ class Ufo implements I3DObject {
         this._mesh.position.z = 0
         this._mesh.updateMatrixWorld(true); // update vertex positions
     }
+
+
 }

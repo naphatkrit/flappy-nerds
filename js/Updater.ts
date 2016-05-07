@@ -183,7 +183,7 @@ class Updater {
     }
 
     private shoot() {
-        var bullet = new Bullet(this._scene, new THREE.Ray(this._ufo.mesh.position, new THREE.Vector3(1, 0, 0)), Config.BULLET_SPEED);
+        var bullet = new Bullet(this._scene, new THREE.Ray(this._ufo.getBulletPos(), new THREE.Vector3(1, 0, 0)), Config.BULLET_SPEED);
         this._bullets.push(bullet);
     }
 
