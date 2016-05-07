@@ -1,3 +1,7 @@
+enum UfoState {
+    Moving,
+    Stopped,
+}
 class Ufo implements I3DObject {
     private _mesh: THREE.Mesh = null;
     private _bird: Bird = null;
@@ -6,6 +10,7 @@ class Ufo implements I3DObject {
     private _mixer: THREE.AnimationMixer;
     private _needmix: boolean = false;
     private _targetbox: THREE.Box3 = null;
+    private _state: UfoState;
 
     constructor(scene: THREE.Scene, bird: Bird, initialVelocity: THREE.Vector3, initialPosition: THREE.Vector3) {
         var textureUfoBase = new THREE.TextureLoader().load("js/textures/metal.jpg");
@@ -98,6 +103,9 @@ class Ufo implements I3DObject {
     }
 
     public update(deltaSeconds: number) {
+        if (this._state != UfoState.Moving) {
+            return;
+        }
         var ufoPosY: number = this._mesh.position.y
         var disDiff: number = ufoPosY - this.getTargetHeight(this._targetbox)
         if (disDiff < - 10 || disDiff > 10) {
@@ -118,6 +126,11 @@ class Ufo implements I3DObject {
         this._mesh.position.y = 0
         this._mesh.position.z = 0
         this._mesh.updateMatrixWorld(true); // update vertex positions
+        this._state = UfoState.Moving;
+    }
+
+    public stop() {
+        this._state = UfoState.Stopped;
     }
 
 

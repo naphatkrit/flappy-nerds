@@ -18,12 +18,17 @@ abstract class Config {
     public static UFO_BIRD_DISTANCE = 300;
 
     public static BULLET_RADIUS = 10;
+    public static BULLET_LENGTH = 30;
     public static BULLET_COLOR = 0xff00ff;
     public static BULLET_SPEED = 500;
 
+    public static BULLET_COST = 1;
+    public static BULLET_HIT_REWARD = 3;
+    public static DEAD_BIRD_REWARD = 10;
+
     //parameters for the UFO
-    public static UFO_BASE_RADIUS = 60
-    public static UFO_UPPER_RADIUS = 30
-    public static UFO_GUN_LENGTH = 50
-    public static UFO_GUN_MUZZLE_LENGTH = 20
+    public static UFO_BASE_RADIUS = 60;
+    public static UFO_UPPER_RADIUS = 30;
+    public static UFO_GUN_LENGTH = 50;
+    public static UFO_GUN_MUZZLE_LENGTH = 20;
 }

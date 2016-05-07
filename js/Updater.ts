@@ -17,6 +17,7 @@ class Updater {
     private _ufoScore: number = 0;
 
     private _watch: Stopwatch;
+    private _deathRewarded = false;
 
     public autopilotEnabled = true;
     private _paused = false;
@@ -67,6 +68,19 @@ class Updater {
             return;
         }
 
+        if (this._bird.mesh.position.y < this._bottomPlane.mesh.position.y) {
+            // collision may not have caught this. just stop the game
+            this._bird.die();
+            this._topPlane.stop();
+            this._bottomPlane.stop();
+            this._ufo.stop();
+            if (!this._deathRewarded) {
+                this.ufoScore += Config.DEAD_BIRD_REWARD;
+                this._deathRewarded = true;
+            }
+            return;
+        }
+
         this._generateObstacles();
         this._cleanObstacles();
 
@@ -92,11 +106,21 @@ class Updater {
                     this._bird.fall();
                     this._topPlane.stop();
                     this._bottomPlane.stop();
+                    this._ufo.stop();
+                    if (!this._deathRewarded) {
+                        this.ufoScore += Config.DEAD_BIRD_REWARD;
+                        this._deathRewarded = true;
+                    }
                     break;
                 case CollisionEffect.Stop:
                     this._bird.die();
                     this._topPlane.stop();
                     this._bottomPlane.stop();
+                    this._ufo.stop();
+                    if (!this._deathRewarded) {
+                        this.ufoScore += Config.DEAD_BIRD_REWARD;
+                        this._deathRewarded = true;
+                    }
                     return;
             }
         }
@@ -104,7 +128,7 @@ class Updater {
         for (var i = 0; i < this._bullets.length; ++i) {
             var kill = false;
             if (this._bullets[i].mesh.position.distanceTo(this._bird.mesh.position) < Config.BULLET_RADIUS + this._bird.boundingRadius) {
-                this.ufoScore++;
+                this.ufoScore += Config.BULLET_HIT_REWARD;
                 kill = true;
             } else {
                 var bulletCollision = Collision.collide(this._bullets[i], obstacleObjects);
@@ -162,6 +186,7 @@ class Updater {
     }
 
     public reset() {
+        this._deathRewarded = false;
         this._rand = new lfsr(Config.RAND_SEED);
         this._prevTime = this._watch.ms;
         this._nextObstacleTime = this._prevTime + this.obstacleInterval;
@@ -185,6 +210,7 @@ class Updater {
     private shoot() {
         var bullet = new Bullet(this._scene, new THREE.Ray(this._ufo.getBulletPos(), new THREE.Vector3(1, 0, 0)), Config.BULLET_SPEED);
         this._bullets.push(bullet);
+        this.ufoScore -= Config.BULLET_COST;
     }
 
     public setNeedsShoot() {
