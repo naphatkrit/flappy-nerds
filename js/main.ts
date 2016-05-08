@@ -273,7 +273,7 @@ class Main {
 window.onload = function() {
     var main = new Main();
     $('#intro-modal').modal('show');
-    $('#intro-modal').on('hide.bs.modal', ()=>{
+    $('#intro-modal').one('hide.bs.modal', ()=>{
         if ($('#easy-btn').hasClass('active')) {
             Config.DIFFICULTY = Difficulty.Easy;
         } else if ($('#medium-btn').hasClass('active')) {

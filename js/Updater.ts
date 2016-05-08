@@ -191,6 +191,20 @@ class Updater {
     }
 
     public reset() {
+        $('#intro-modal').modal('show');
+        $('#intro-modal').one('hide.bs.modal', ()=>{
+            if ($('#easy-btn').hasClass('active')) {
+                Config.DIFFICULTY = Difficulty.Easy;
+            } else if ($('#medium-btn').hasClass('active')) {
+                Config.DIFFICULTY = Difficulty.Medium;
+            } else if ($('#hard-btn').hasClass('active')) {
+                Config.DIFFICULTY = Difficulty.Hard;
+            }
+            this.restart();
+        });
+    }
+
+    private restart() {
         this._deathRewarded = false;
         this._rand = new lfsr(Config.RAND_SEED);
         this._prevTime = this._watch.ms;
