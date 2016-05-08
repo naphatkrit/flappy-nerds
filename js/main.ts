@@ -188,10 +188,12 @@ class Main {
         this._initUfo();
         this._initCameras();
         this._initPlanes();
+    }
+
+    public init() {
         this._initUpdater();
         this._initStats();
         this._initKeyHandlers();
-
         window.addEventListener('resize', (event) => { this.onWindowResize(event) }, false);
         document.addEventListener('keydown', (event) => { this.onKeyDown(event) }, false);
 
@@ -270,5 +272,16 @@ class Main {
 
 window.onload = function() {
     var main = new Main();
-    main.animate();
+    $('#intro-modal').modal('show');
+    $('#intro-modal').on('hide.bs.modal', ()=>{
+        if ($('#easy-btn').hasClass('active')) {
+            Config.DIFFICULTY = Difficulty.Easy;
+        } else if ($('#medium-btn').hasClass('active')) {
+            Config.DIFFICULTY = Difficulty.Medium;
+        } else if ($('#hard-btn').hasClass('active')) {
+            Config.DIFFICULTY = Difficulty.Hard;
+        }
+        main.init();
+        main.animate();
+    });
 }

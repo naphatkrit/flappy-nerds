@@ -20,6 +20,32 @@
     </div>
     <div id='ufo-control'>
     </div>
+    <div class="modal fade" id="intro-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="myModalLabel">Welcome to Flappy Nerds!</h4>
+          </div>
+          <div id="intro-body" class="modal-body">
+              Difficulty:
+              <div class="btn-group" data-toggle="buttons">
+                  <label id="easy-btn" class="btn btn-sm btn-primary">
+                      <input type="radio" name="options" id="option1" autocomplete="off"> Easy
+                  </label>
+                  <label id="medium-btn" class="btn btn-sm btn-primary active">
+                      <input type="radio" name="options" id="option2" autocomplete="off" checked> Medium
+                  </label>
+                  <label id="hard-btn" class="btn btn-sm btn-primary">
+                      <input type="radio" name="options" id="option3" autocomplete="off"> Hard
+                  </label>
+              </div>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-primary" data-dismiss="modal">Start</button>
+          </div>
+        </div>
+      </div>
+    </div>
     <!-- Modal -->
     <div class="modal fade" id="help-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
       <div class="modal-dialog" role="document">
