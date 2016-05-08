@@ -209,6 +209,11 @@ class Main {
             $('#restart-btn').blur();
             this.updater.reset();
         });
+        $('#intro-modal').on('hide.bs.modal', ()=>{
+            if (!this.updater.autopilotEnabled) {
+                this._toggleAutopilot();
+            }
+        });
         $('#help-btn').on('focus', ()=> {
             $('#help-btn').blur();
         });
