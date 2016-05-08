@@ -11,6 +11,8 @@ class Ufo implements I3DObject {
     private _needmix: boolean = false;
     private _targetbox: THREE.Box3 = null;
     private _state: UfoState;
+    private _light_left: THREE.PointLight;
+    private _light_front: THREE.PointLight;
 
     constructor(scene: THREE.Scene, bird: Bird, initialVelocity: THREE.Vector3, initialPosition: THREE.Vector3) {
         var textureUfoBase = new THREE.TextureLoader().load("js/textures/metal.jpg");
@@ -20,7 +22,7 @@ class Ufo implements I3DObject {
                 map: textureUfoBase,
             }
         );
-        var materialUfoUpper = new THREE.MeshPhongMaterial(
+        var materialUfoUpper = new THREE.MeshLambertMaterial(
             {
                 map: textureUfoUpper,
                 emissive: 0x007a99,
@@ -71,6 +73,14 @@ class Ufo implements I3DObject {
         this._velocity = initialVelocity.clone();
         this._scene = scene;
         scene.add(this._mesh);
+
+        this._light_left = new THREE.PointLight(0xffffee, 0.8, 500, 2);
+        this._light_left.castShadow = true;
+        this._light_front = new THREE.PointLight(0xffffee, 0.8, 500, 2);
+        this._light_front.castShadow = true;
+        scene.add(this._light_left);
+        scene.add(this._light_front);
+
         this.reset();
     }
 
@@ -115,13 +125,19 @@ class Ufo implements I3DObject {
             this._velocity.y = 0
         }
         this._mesh.position.addScaledVector(this._velocity, deltaSeconds);
+        this._light_left.position.addScaledVector(this._velocity, deltaSeconds);
+        this._light_front.position.addScaledVector(this._velocity, deltaSeconds);
     }
 
     public removeFromScene() {
         this._scene.remove(this._mesh);
+        this._scene.remove(this._light_left);
+        this._scene.remove(this._light_front);
     }
 
     public reset() {
+        this._light_left.position.set(-Config.UFO_BIRD_DISTANCE - 50, 50, 0);
+        this._light_front.position.set(-Config.UFO_BIRD_DISTANCE, 0, 100);
         this._mesh.position.x = -Config.UFO_BIRD_DISTANCE
         this._mesh.position.y = 0
         this._mesh.position.z = 0
