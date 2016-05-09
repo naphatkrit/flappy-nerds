@@ -194,7 +194,6 @@ class Main {
         this._initUpdater();
         this._initStats();
         this._initKeyHandlers();
-        window.addEventListener('resize', (event) => { this.onWindowResize(event) }, false);
         document.addEventListener('keydown', (event) => { this.onKeyDown(event) }, false);
 
         $('#autopilot-btn').on('click', ()=> {
@@ -245,17 +244,6 @@ class Main {
         if (keyHandler !== undefined) {
             keyHandler.handler(event);
         }
-    }
-
-    private onWindowResize(event) {
-        this.SCREEN_WIDTH = window.innerWidth;
-        this.SCREEN_HEIGHT = window.innerHeight;
-        this.aspect = this.SCREEN_WIDTH / this.SCREEN_HEIGHT;
-        this.renderer.setSize(this.SCREEN_WIDTH, this.SCREEN_HEIGHT);
-        this.cameraPerspective.aspect = this.aspect;
-        this.cameraPerspective.updateProjectionMatrix();
-        this.cameraFirstPerson.aspect = this.aspect;
-        this.cameraFirstPerson.updateProjectionMatrix();
     }
 
     public animate() {
