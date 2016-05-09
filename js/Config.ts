@@ -15,7 +15,7 @@ abstract class Config {
             case Difficulty.Easy:
                 return 5000;
             case Difficulty.Medium:
-                return 3500;
+                return 4000;
             case Difficulty.Hard:
                 return 2500;
         }
@@ -25,9 +25,9 @@ abstract class Config {
             case Difficulty.Easy:
                 return 2000;
             case Difficulty.Medium:
-                return 1500;
+                return 1000;
             case Difficulty.Hard:
-                return 500;
+                return 250;
         }
     }
     public static RAND_SEED = 35;
