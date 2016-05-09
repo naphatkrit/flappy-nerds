@@ -1,5 +1,7 @@
 # flappy-nerds
 This project is hosted at http://flappy-nerds.herokuapp.com.
+## Project Writeup
+A detailed project description, including different pieces used and features implemented, can be found under ***Writeup.pdf***.
 
 ## Development
 ### Prerequisites
