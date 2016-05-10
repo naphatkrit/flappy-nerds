@@ -30,6 +30,8 @@ abstract class Config {
                 return 250;
         }
     }
+    public static OBSTACLE_Y_POS_SCALE = 0.9;
+
     public static RAND_SEED = 35;
     public static get OBSTACLE_BOX_SIZE() {
         switch (Config.DIFFICULTY) {

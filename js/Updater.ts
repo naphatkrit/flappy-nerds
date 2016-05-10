@@ -251,6 +251,7 @@ class Updater {
 
             var boxSize = Config.OBSTACLE_BOX_SIZE + Config.OBSTACLE_BOX_RANGE * (this._rand.getNext() * 2 - 1);
             var yCenter = (Config.MAX_Y - Config.MIN_Y - boxSize)/2 * (this._rand.getNext() * 2 - 1);
+            yCenter *= Config.OBSTACLE_Y_POS_SCALE;
             var obstacle = new StandardObstacle(this._scene, new THREE.Box3(new THREE.Vector3(xPos, yCenter - boxSize/2, -100), new THREE.Vector3(xPos + 100, yCenter + boxSize/2, 100)), Config.MIN_Y, Config.MAX_Y);
 
             this._obstacles.push(obstacle);
