@@ -92,7 +92,7 @@ class Ufo implements I3DObject {
         var ymin: number = box.min.y
         var ymax: number = box.max.y
 
-        return ymin + 70;
+        return ymin + 90;
     }
 
     public get mesh() {

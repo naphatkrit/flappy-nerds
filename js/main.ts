@@ -55,7 +55,7 @@ class Main {
         this.cameraPerspective.position.z = 1000;
         this.cameraPerspective.lookAt(new THREE.Vector3(this.cameraPerspective.position.x, this.cameraPerspective.position.y, -1));
 
-        this.cameraFirstPerson = new THREE.PerspectiveCamera(50, 0.5 * this.aspect, Config.FIRST_PERSON_DISTANCE - 150, Config.FIRST_PERSON_DISTANCE + 3000);
+        this.cameraFirstPerson = new THREE.PerspectiveCamera(50, 0.5 * this.aspect, Config.FIRST_PERSON_DISTANCE - 180, Config.FIRST_PERSON_DISTANCE + 3000);
         // counteract different front orientation of cameras vs rig
         this.cameraFirstPerson.rotation.y = Math.PI;
 
